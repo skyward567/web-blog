@@ -3,7 +3,7 @@
 =================================================== */
 
 /* Подключение шрифта Inter из Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 /* CSS-переменные для цветов */
 :root {
@@ -33,7 +33,7 @@
 
 /* Базовые стили страницы */
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.6;
@@ -111,7 +111,10 @@ nav ul li a {
   padding-bottom: 2px;
   border-bottom: 2px solid transparent;
   /* Плавный переход при наведении */
-  transition: font-weight 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition:
+    font-weight 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
 nav ul li a:hover {
@@ -144,7 +147,7 @@ section {
 
 /* Декоративная полоса под заголовком секций опыта/образования */
 section h2::after {
-  content: '';
+  content: "";
   display: block;
   width: 100%;
   height: 2px;
@@ -211,7 +214,7 @@ ul li {
 
 /* Кастомный маркер списка */
 ul li::before {
-  content: '—';
+  content: "—";
   position: absolute;
   left: 0;
   color: var(--color-accent);
@@ -319,7 +322,9 @@ ul li::before {
   gap: 20px;
   align-items: flex-start;
   /* Плавный переход фона при наведении */
-  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 /* Чередование фона через псевдоклассы */
@@ -383,7 +388,9 @@ ul li::before {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .blog-card:hover {
@@ -448,7 +455,7 @@ ul li::before {
 
 .create-article input,
 .create-article textarea {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.95rem;
   padding: 10px 14px;
   border: 1px solid var(--color-border);
@@ -464,7 +471,7 @@ ul li::before {
 }
 
 .create-article button {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
   padding: 10px 24px;
