@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Блог</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <!-- Навигация -->
@@ -16,75 +17,114 @@
 
     <!-- Главный контент -->
     <main>
-      <h1>Статьи</h1>
+      <section>
+        <h1>Статьи</h1>
 
-      <article>
-        <h2>Почему Java остаётся востребованным языком в 2024 году</h2>
-        <p>Опубликовано: 10 декабря 2024</p>
-        <p>
-          Java существует уже почти 30 лет, но по-прежнему входит в топ самых
-          популярных языков программирования. Разберём, почему
-          платформонезависимость, зрелая экосистема и JVM делают его отличным
-          выбором для бэкенд-разработки и enterprise-решений. Принцип "Write
-          Once, Run Anywhere" по-прежнему актуален в мире микросервисов и
-          облачных платформ.
-        </p>
-      </article>
+        <div class="blog-grid">
+          <div class="blog-card">
+            <img
+              src="https://dac.digital/wp-content/uploads/2023/04/backend-java-optimized.png"
+              alt="Java 2024"
+            />
+            <div class="blog-card-body">
+              <h2>Почему Java остаётся востребованным языком в 2024 году</h2>
+              <p class="article-date">10 декабря 2024</p>
+              <p>
+                Java существует уже почти 30 лет, но по-прежнему входит в топ
+                самых популярных языков. Платформонезависимость и зрелая
+                экосистема делают его отличным выбором для enterprise-решений.
+              </p>
+            </div>
+          </div>
 
-      <article>
-        <h2>Основы ООП в Java: классы, объекты и наследование</h2>
-        <p>Опубликовано: 1 декабря 2024</p>
-        <p>
-          Объектно-ориентированное программирование — сердце Java. В этой статье
-          разберём ключевые концепции: инкапсуляцию, наследование и полиморфизм
-          на конкретных примерах кода. Поймём, зачем нужны интерфейсы и
-          абстрактные классы, и как правильно проектировать иерархии классов.
-        </p>
-      </article>
+          <div class="blog-card">
+            <img
+              src="https://sd.net.ua/uploads/posts/2021-09/1632133603_java.jpg"
+              alt="ООП в Java"
+            />
+            <div class="blog-card-body">
+              <h2>Основы ООП в Java: классы, объекты и наследование</h2>
+              <p class="article-date">1 декабря 2024</p>
+              <p>
+                Объектно-ориентированное программирование — сердце Java.
+                Разберём инкапсуляцию, наследование и полиморфизм на конкретных
+                примерах кода.
+              </p>
+            </div>
+          </div>
 
-      <article>
-        <h2>C++ vs Java: что выбрать начинающему разработчику</h2>
-        <p>Опубликовано: 25 ноября 2024</p>
-        <p>
-          Оба языка изучают в университетах и применяют в промышленной
-          разработке. Сравним управление памятью, производительность, экосистему
-          и перспективы трудоустройства, чтобы помочь с выбором первого
-          серьёзного языка для углублённого изучения.
-        </p>
-      </article>
+          <div class="blog-card">
+            <img
+              src="https://trendnologies.com/wp-content/uploads/2025/02/CJFI-1.png.webp"
+              alt="C++ vs Java"
+            />
+            <div class="blog-card-body">
+              <h2>C++ vs Java: что выбрать начинающему разработчику</h2>
+              <p class="article-date">25 ноября 2024</p>
+              <p>
+                Сравним управление памятью, производительность, экосистему и
+                перспективы трудоустройства, чтобы помочь с выбором первого
+                серьёзного языка.
+              </p>
+            </div>
+          </div>
 
-      <article>
-        <h2>Мой опыт прохождения курса Java Backend Developer на Hyperskill</h2>
-        <p>Опубликовано: 5 ноября 2024</p>
-        <p>
-          Честный отзыв о платформе JetBrains Hyperskill: структура курса,
-          практические задания, что понравилось, а что можно улучшить. Делюсь
-          личным опытом и советами для тех, кто хочет освоить серверную
-          разработку на Java.
-        </p>
-      </article>
+          <div class="blog-card">
+            <img
+              src="https://blog.jetbrains.com/wp-content/uploads/2019/02/JB_Academy_1280x800_3.png"
+              alt="Hyperskill"
+            />
+            <div class="blog-card-body">
+              <h2>Мой опыт курса Java Backend Developer на Hyperskill</h2>
+              <p class="article-date">5 ноября 2024</p>
+              <p>
+                Честный отзыв о платформе JetBrains Hyperskill: структура курса,
+                практические задания, что понравилось и советы для тех, кто
+                хочет освоить серверную разработку на Java.
+              </p>
+            </div>
+          </div>
 
-      <article>
-        <h2>PostgreSQL для разработчика: от SELECT до индексов</h2>
-        <p>Опубликовано: 20 октября 2024</p>
-        <p>
-          PostgreSQL — одна из самых мощных реляционных СУБД с открытым исходным
-          кодом. Разберём основы: создание таблиц, JOIN-запросы, транзакции и
-          индексы. Покажем, как правильно проектировать схему базы данных для
-          типичного бэкенд-приложения.
-        </p>
-      </article>
+          <div class="blog-card">
+            <img
+              src="https://memgraph.com/images/blog/what-is-postgresql-database/cover.png"
+              alt="PostgreSQL"
+            />
+            <div class="blog-card-body">
+              <h2>PostgreSQL для разработчика: от SELECT до индексов</h2>
+              <p class="article-date">20 октября 2024</p>
+              <p>
+                Разберём основы PostgreSQL: создание таблиц, JOIN-запросы,
+                транзакции и индексы. Как правильно проектировать схему базы
+                данных для бэкенд-приложения.
+              </p>
+            </div>
+          </div>
+
+          <div class="blog-card">
+            <img
+              src="https://webandcrafts.com/_next/image?url=https%3A%2F%2Fadmin.wac.co%2Fuploads%2FFeatures_Of_Python_1_f4ccd6d9f7.jpg&w=4500&q=90"
+              alt="Python"
+            />
+            <div class="blog-card-body">
+              <h2>Python для ЕГЭ и не только: с чего начать</h2>
+              <p class="article-date">10 октября 2024</p>
+              <p>
+                Python — отличный язык программирования для начинающих
+                разработчиков. Его изучают в школах, используют на ЕГЭ, а затем
+                применяют в анализе данных и машинном обучении.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- Форма создания статьи -->
       <section>
         <h2>Создать статью</h2>
-        <div>
+        <div class="create-article">
           <input type="text" placeholder="Заголовок" />
-        </div>
-        <div>
-          <textarea rows="6" placeholder="Текст статьи"></textarea>
-        </div>
-        <div>
+          <textarea rows="5" placeholder="Текст статьи"></textarea>
           <button type="button">Добавить</button>
         </div>
       </section>
@@ -92,16 +132,22 @@
 
     <!-- Футер -->
     <footer>
-      <h2>Контакты</h2>
-      <p>Email: <a href="mailto:student@gmail.com">student@gmail.com</a></p>
-      <p>Телефон: +7 (999) 123-45-67</p>
-
-      <h3>Социальные сети:</h3>
-      <p>
-        <a href="#">Instagram</a> | <a href="#">Twitter</a> |
-        <a href="#">LinkedIn</a> |
-        <a href="#">GitHub</a>
-      </p>
+      <div class="footer-inner">
+        <div>
+          <h2>Контакты</h2>
+          <p>Email: <a href="mailto:student@nstu.ru">student@nstu.ru</a></p>
+          <p>Телефон: +7 (999) 123-45-67</p>
+        </div>
+        <div>
+          <h2>Социальные сети</h2>
+          <div class="social-links">
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </div>
     </footer>
   </body>
 </html>
