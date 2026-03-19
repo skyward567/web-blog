@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Блог</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <!-- Навигация -->
+    <nav>
+      <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="blog.html">Блог</a></li>
+      </ul>
+    </nav>
+
+    <!-- Главный контент -->
+    <main>
+
+      <section>
+        <h1>Статьи</h1>
+
+        <div class="blog-grid">
+
+          <div class="blog-card">
+            <img
+              src="https://picsum.photos/seed/java2024/400/160"
+              alt="Java 2024"
+            />
+            <div class="blog-card-body">
+              <h2>Почему Java остаётся востребованным языком в 2024 году</h2>
+              <p class="article-date">10 декабря 2024</p>
+              <p>
+                Java существует уже почти 30 лет, но по-прежнему входит в топ
+                самых популярных языков. Платформонезависимость и зрелая
+                экосистема делают его отличным выбором для enterprise-решений.
+              </p>
+            </div>
+          </div>
+
+          <div class="blog-card">
+            <img
+              src="https://picsum.photos/seed/oop/400/160"
+              alt="ООП в Java"
+            />
+            <div class="blog-card-body">
+              <h2>Основы ООП в Java: классы, объекты и наследование</h2>
+              <p class="article-date">1 декабря 2024</p>
+              <p>
+                Объектно-ориентированное программирование — сердце Java.
+                Разберём инкапсуляцию, наследование и полиморфизм на
+                конкретных примерах кода.
+              </p>
+            </div>
+          </div>
+
+          <div class="blog-card">
+            <img
+              src="https://picsum.photos/seed/cplusplus/400/160"
+              alt="C++ vs Java"
+            />
+            <div class="blog-card-body">
+              <h2>C++ vs Java: что выбрать начинающему разработчику</h2>
+              <p class="article-date">25 ноября 2024</p>
+              <p>
+                Сравним управление памятью, производительность, экосистему
+                и перспективы трудоустройства, чтобы помочь с выбором
+                первого серьёзного языка.
+              </p>
+            </div>
+          </div>
+
+          <div class="blog-card">
+            <img
+              src="https://picsum.photos/seed/hyperskill2/400/160"
+              alt="Hyperskill"
+            />
+            <div class="blog-card-body">
+              <h2>Мой опыт курса Java Backend Developer на Hyperskill</h2>
+              <p class="article-date">5 ноября 2024</p>
+              <p>
+                Честный отзыв о платформе JetBrains Hyperskill: структура
+                курса, практические задания, что понравилось и советы для
+                тех, кто хочет освоить серверную разработку на Java.
+              </p>
+            </div>
+          </div>
+
+          <div class="blog-card">
+            <img
+              src="https://picsum.photos/seed/postgres/400/160"
+              alt="PostgreSQL"
+            />
+            <div class="blog-card-body">
+              <h2>PostgreSQL для разработчика: от SELECT до индексов</h2>
+              <p class="article-date">20 октября 2024</p>
+              <p>
+                Разберём основы PostgreSQL: создание таблиц, JOIN-запросы,
+                транзакции и индексы. Как правильно проектировать схему базы
+                данных для бэкенд-приложения.
+              </p>
+            </div>
+          </div>
+
+          <div class="blog-card">
+            <img
+              src="https://picsum.photos/seed/python/400/160"
+              alt="Python"
+            />
+            <div class="blog-card-body">
+              <h2>Python для ЕГЭ и не только: с чего начать</h2>
+              <p class="article-date">10 октября 2024</p>
+              <p>
+                Python — отличный первый язык программирования. Его изучают
+                в школах, используют на ЕГЭ, а затем применяют в анализе
+                данных и машинном обучении.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Форма создания статьи -->
+      <section>
+        <h2>Создать статью</h2>
+        <div class="create-article">
+          <input type="text" placeholder="Заголовок" />
+          <textarea rows="5" placeholder="Текст статьи"></textarea>
+          <button type="button">Добавить</button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Футер -->
+    <footer>
+      <div class="footer-inner">
+        <div>
+          <h2>Контакты</h2>
+          <p>Email: <a href="mailto:student@nstu.ru">student@nstu.ru</a></p>
+          <p>Телефон: +7 (999) 123-45-67</p>
+        </div>
+        <div>
+          <h2>Социальные сети</h2>
+          <div class="social-links">
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>
