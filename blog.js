@@ -4,6 +4,10 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+  // ---------------------------------------------------
+  // Элементы страницы
+  // ---------------------------------------------------
+
   const btnCreatePost  = document.getElementById('btn-create-post');
   const btnShowStats   = document.getElementById('btn-show-stats');
   const formSection    = document.getElementById('create-article-section');
@@ -18,58 +22,127 @@ document.addEventListener('DOMContentLoaded', function () {
   const btnDialogX     = document.getElementById('btn-dialog-x');
   const postTemplate   = document.getElementById('post-template');
 
+  // ---------------------------------------------------
   // Подсчёт карточек
+  // ---------------------------------------------------
+
   function countPosts() {
     return blogGrid.querySelectorAll('.blog-card').length;
   }
 
-  // Показать форму
+  // ---------------------------------------------------
+  // Показать / скрыть форму
+  // ---------------------------------------------------
+
   function showForm() {
     formSection.classList.add('visible');
     formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Скрыть форму и очистить поля
   function hideForm() {
+    // Убираем класс visible — форма плавно скрывается (анимация в CSS)
     formSection.classList.remove('visible');
+    // Сбрасываем поля формы
     inputTitle.value = '';
     inputText.value  = '';
   }
 
   btnCreatePost.addEventListener('click', showForm);
+
+  // Кнопка "Отмена" — очищает и скрывает форму
   btnCancel.addEventListener('click', hideForm);
 
-  // Добавление поста через <template>
+  // ---------------------------------------------------
+  // Удаление карточки статьи
+  // ---------------------------------------------------
+
+  function deleteCard(card) {
+    // Добавляем класс анимации исчезновения
+    card.classList.add('blog-card--removing');
+
+    // После завершения анимации (300ms) удаляем элемент из DOM
+    card.addEventListener('animationend', function () {
+      card.remove();
+    });
+  }
+
+  // ---------------------------------------------------
+  // Создание кнопки удаления и добавление обработчика
+  // Вызывается для каждой карточки — и существующих, и новых
+  // ---------------------------------------------------
+
+  function addDeleteButton(card) {
+    const btn = document.createElement('button');
+    btn.className = 'blog-card__delete';
+    btn.title     = 'Удалить статью';
+    btn.innerHTML = '✕';
+
+    btn.addEventListener('click', function () {
+      deleteCard(card);
+    });
+
+    card.appendChild(btn);
+  }
+
+  // Добавляем кнопку удаления на все существующие карточки при загрузке
+  blogGrid.querySelectorAll('.blog-card').forEach(function (card) {
+    addDeleteButton(card);
+  });
+
+  // ---------------------------------------------------
+  // Добавление новой карточки через <template>
+  // ---------------------------------------------------
+
   function addPost(title, text, date) {
+    // Клонируем template
     const clone = postTemplate.content.cloneNode(true);
+
+    // Заполняем данными из формы
     clone.querySelector('.post-title').textContent = title;
     clone.querySelector('.post-date').textContent  = date;
     clone.querySelector('.post-text').textContent  = text;
+
+    // querySelector на DocumentFragment не возвращает сам корневой элемент,
+    // поэтому получаем карточку после вставки в DOM
     blogGrid.insertBefore(clone, blogGrid.firstChild);
+
+    // Теперь карточка уже в DOM — берём первый дочерний элемент сетки
+    const newCard = blogGrid.firstElementChild;
+    addDeleteButton(newCard);
   }
 
-  // Mock-пост при загрузке для демонстрации
-  addPost(
-    'Новая статья: Spring Boot за 1 час',
-    'Spring Boot позволяет быстро создавать production-ready приложения на Java. В этой статье разберём создание REST API с нуля.',
-    '27 марта 2025'
-  );
+  // ---------------------------------------------------
+  // Кнопка "Сохранить" — читает данные из формы и добавляет статью
+  // ---------------------------------------------------
 
-  // Сохранить — добавить пост из формы
   btnSave.addEventListener('click', function () {
-    if (!inputTitle.value.trim() || !inputText.value.trim()) {
+    const title = inputTitle.value.trim();
+    const text  = inputText.value.trim();
+
+    // Валидация: оба поля обязательны
+    if (!title || !text) {
       alert('Пожалуйста, заполните все обязательные поля.');
       return;
     }
-    addPost(
-      inputTitle.value.trim(),
-      inputText.value.trim(),
-      new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
-    );
+
+    // Формируем текущую дату в читаемом формате
+    const date = new Date().toLocaleDateString('ru-RU', {
+      day:   'numeric',
+      month: 'long',
+      year:  'numeric',
+    });
+
+    // Добавляем статью на страницу
+    addPost(title, text, date);
+
+    // Сбрасываем и скрываем форму
     hideForm();
   });
 
+  // ---------------------------------------------------
   // Диалог статистики
+  // ---------------------------------------------------
+
   btnShowStats.addEventListener('click', function () {
     statsPostCount.textContent = countPosts();
     statsDialog.showModal();
@@ -83,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
     statsDialog.close();
   });
 
-  // Закрыть при клике вне диалога
+  // Закрыть при клике вне диалога (по затемнённому фону)
   statsDialog.addEventListener('click', function (event) {
     if (event.target === statsDialog) {
       statsDialog.close();
