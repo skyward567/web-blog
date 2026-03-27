@@ -1,236 +1,264 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Главная</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="index-styles.css" />
   </head>
   <body>
+
     <!-- Навигация -->
-    <nav>
-      <ul>
-        <li><a href="index.html">Главная</a></li>
-        <li><a href="blog.html">Блог</a></li>
+    <nav class="nav">
+      <ul class="nav__list">
+        <li><a class="nav__link" href="index.html">Главная</a></li>
+        <li><a class="nav__link" href="blog.html">Блог</a></li>
       </ul>
     </nav>
 
     <!-- Главный контент -->
     <main>
-      <!-- Блок "Обо мне" -->
-      <section class="about-section">
-        <img
-          src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/fc/1c/1b/photo0jpg.jpg?w=500&h=500&s=1"
-          alt="Фото автора"
-        />
-        <div class="about-text">
-          <h1>Обо мне</h1>
-          <p>
-            Добро пожаловать! Я студент 4 курса Новосибирского Государственного
-            Технического Университета. На этом блоге я делюсь своими знаниями,
-            проектами и идеями в области программирования. Здесь вы найдёте
-            заметки об изученных языках, разборы технологий и мысли о
-            современной разработке программного обеспечения.
-          </p>
-          <p>
-            В свободное время стараюсь повышать свой уровень знаний, выбирая
-            курсы по востребованным языкам и технологиям. Углублённо изучаю Java
-            — считаю его современным платформонезависимым языком с широким
-            применением в бэкенд-разработке.
-          </p>
-        </div>
-      </section>
+      <div class="container">
+        <div class="main-content">
 
-      <!-- Блок "Образование" -->
-      <section>
-        <h2>Образование</h2>
-
-        <div class="experience-item">
-          <h3>Новосибирский Государственный Технический Университет</h3>
-          <p>4 курс — по настоящее время</p>
-          <p>
-            Факультет автоматики и вычислительной техники.<br />
-            Специальность: «Информатика и вычислительная техника».<br />
-            Направление: «Программное обеспечение компьютерных систем и сетей».
-          </p>
-        </div>
-
-        <div class="experience-item">
-          <h3>Курсы и сертификации</h3>
-          <ul>
-            <li>Java Developer — Hyperskill.org (JetBrains)</li>
-            <li>Java Backend Developer — Hyperskill.org (JetBrains)</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- Блок "Опыт работы" -->
-      <section>
-        <h2>Опыт работы</h2>
-
-        <div class="experience-item">
-          <h3>Коммерческий опыт</h3>
-          <p>
-            Опыта в коммерческой разработке в рамках каких-либо организаций пока
-            нет, стажировок в компаниях не проходил.
-          </p>
-        </div>
-
-        <div class="experience-item">
-          <h3>Учебные и личные проекты</h3>
-          <p>
-            В рамках учёбы в университете и на интернет-курсах выполнялись
-            небольшие проекты, как правило индивидуально. Опыт командной работы
-            складывается из совместного выполнения лабораторных работ бригадами
-            в рамках университета.
-          </p>
-        </div>
-      </section>
-
-      <!-- Блок "Навыки" -->
-      <section>
-        <h2>Навыки</h2>
-        <ul class="skills-list">
-          <li>Python</li>
-          <li>C</li>
-          <li>C++</li>
-          <li>C#</li>
-          <li>Java</li>
-          <li>JavaScript</li>
-          <li>HTML</li>
-          <li>PostgreSQL</li>
-          <li>Git</li>
-          <li>Hyperskill</li>
-          <li>ООП</li>
-          <li>Бэкенд-разработка</li>
-        </ul>
-      </section>
-
-      <!-- Блок "Хобби" -->
-      <section>
-        <h2>Хобби</h2>
-        <div class="hobbies-grid">
-          <div class="hobby-card">
+          <!-- Блок "Обо мне" -->
+          <section class="about">
             <img
-              src="https://fireseo.ru/wp-content/uploads/2022/06/programming.jpeg"
-              alt="Программирование"
+              class="about__photo"
+              src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/fc/1c/1b/photo0jpg.jpg?w=500&h=500&s=1"
+              alt="Фото автора"
             />
-            <div class="hobby-overlay">
-              <span>Программирование</span>
-            </div>
-          </div>
-
-          <div class="hobby-card">
-            <img
-              src="https://i.work.ua/cdn-cgi/image/f=jpeg/article/1161b.jpg?v=1713862773"
-              alt="Чтение"
-            />
-            <div class="hobby-overlay">
-              <span>Чтение</span>
-            </div>
-          </div>
-
-          <div class="hobby-card">
-            <img
-              src="https://soberhotel.ru/wp-content/uploads/2023/10/treking_foto-1024x490.jpg"
-              alt="Пешие прогулки"
-            />
-            <div class="hobby-overlay">
-              <span>Пешие прогулки</span>
-            </div>
-          </div>
-
-          <div class="hobby-card">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Opening_chess_position_from_black_side.jpg"
-              alt="Шахматы"
-            />
-            <div class="hobby-overlay">
-              <span>Шахматы</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Блок "Последние статьи" -->
-      <section>
-        <h2>Последние статьи</h2>
-
-        <div class="articles-grid">
-          <article>
-            <img
-              src="https://dac.digital/wp-content/uploads/2023/04/backend-java-optimized.png"
-              alt="Java"
-            />
-            <div class="article-content">
-              <h3>Почему Java остаётся востребованным языком в 2024 году</h3>
-              <p class="article-date">Опубликовано: 10 декабря 2024</p>
+            <div class="about__text">
+              <h1>Обо мне</h1>
               <p>
-                Java существует уже почти 30 лет, но по-прежнему входит в топ
-                самых популярных языков. Разберём, почему платформонезависимость
-                и зрелая экосистема делают его отличным выбором для
-                бэкенд-разработки.
+                Добро пожаловать! Я студент 4 курса Новосибирского
+                Государственного Технического Университета. На этом блоге я
+                делюсь своими знаниями, проектами и идеями в области
+                программирования. Здесь вы найдёте заметки об изученных
+                языках, разборы технологий и мысли о современной разработке
+                программного обеспечения.
+              </p>
+              <p>
+                В свободное время стараюсь повышать свой уровень знаний,
+                выбирая курсы по востребованным языкам и технологиям.
+                Углублённо изучаю Java — считаю его современным
+                платформонезависимым языком с широким применением в
+                бэкенд-разработке.
               </p>
             </div>
-          </article>
+          </section>
 
-          <article>
-            <img
-              src="https://trendnologies.com/wp-content/uploads/2025/02/CJFI-1.png.webp"
-              alt="C++ vs Java"
-            />
-            <div class="article-content">
-              <h3>C++ vs Java: что выбрать начинающему разработчику</h3>
-              <p class="article-date">Опубликовано: 25 ноября 2024</p>
-              <p>
-                Сравним управление памятью, производительность и перспективы
-                трудоустройства, чтобы помочь с выбором первого серьёзного языка
-                для углублённого изучения.
+          <!-- Блок "Образование" -->
+          <section>
+            <h2 class="section-title">Образование</h2>
+
+            <div class="experience-item">
+              <h3>Новосибирский Государственный Технический Университет</h3>
+              <p class="experience-item__meta">4 курс — по настоящее время</p>
+              <p class="experience-item__meta">
+                Факультет автоматики и вычислительной техники.<br />
+                Специальность: «Информатика и вычислительная техника».<br />
+                Направление: «Программное обеспечение компьютерных систем и сетей».
               </p>
             </div>
-          </article>
 
-          <article>
-            <img
-              src="https://blog.jetbrains.com/wp-content/uploads/2019/02/JB_Academy_1280x800_3.png"
-              alt="Hyperskill"
-            />
-            <div class="article-content">
-              <h3>Мой опыт курса Java Backend Developer на Hyperskill</h3>
-              <p class="article-date">Опубликовано: 5 ноября 2024</p>
-              <p>
-                Честный отзыв о платформе JetBrains Hyperskill: структура курса,
-                практические задания, что понравилось и советы для тех, кто
-                хочет освоить серверную разработку на Java.
+            <div class="experience-item">
+              <h3>Курсы и сертификации</h3>
+              <ul class="dash-list">
+                <li class="dash-list__item">Java Developer — Hyperskill.org (JetBrains)</li>
+                <li class="dash-list__item">Java Backend Developer — Hyperskill.org (JetBrains)</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- Блок "Опыт работы" -->
+          <section>
+            <h2 class="section-title">Опыт работы</h2>
+
+            <div class="experience-item">
+              <h3>Коммерческий опыт</h3>
+              <p class="experience-item__meta">
+                Опыта в коммерческой разработке в рамках каких-либо организаций
+                пока нет, стажировок в компаниях не проходил.
               </p>
             </div>
-          </article>
+
+            <div class="experience-item">
+              <h3>Учебные и личные проекты</h3>
+              <p class="experience-item__meta">
+                В рамках учёбы в университете и на интернет-курсах выполнялись
+                небольшие проекты, как правило индивидуально. Опыт командной
+                работы складывается из совместного выполнения лабораторных
+                работ бригадами в рамках университета.
+              </p>
+            </div>
+          </section>
+
+          <!-- Блок "Навыки" -->
+          <section>
+            <h2 class="section-title">Навыки</h2>
+            <ul class="skills-list">
+              <li class="skills-list__item">Python</li>
+              <li class="skills-list__item">C</li>
+              <li class="skills-list__item">C++</li>
+              <li class="skills-list__item">C#</li>
+              <li class="skills-list__item">Java</li>
+              <li class="skills-list__item">JavaScript</li>
+              <li class="skills-list__item">HTML</li>
+              <li class="skills-list__item">PostgreSQL</li>
+              <li class="skills-list__item">Git</li>
+              <li class="skills-list__item">Hyperskill</li>
+              <li class="skills-list__item">ООП</li>
+              <li class="skills-list__item">Бэкенд-разработка</li>
+            </ul>
+          </section>
+
+          <!-- Блок "Хобби" -->
+          <section>
+            <h2 class="section-title">Хобби</h2>
+            <div class="hobbies-grid">
+
+              <div class="hobby-card">
+                <img
+                  class="hobby-card__img"
+                  src="https://fireseo.ru/wp-content/uploads/2022/06/programming.jpeg"
+                  alt="Программирование"
+                />
+                <div class="hobby-card__overlay">
+                  <span class="hobby-card__label">Программирование</span>
+                </div>
+              </div>
+
+              <div class="hobby-card">
+                <img
+                  class="hobby-card__img"
+                  src="https://i.work.ua/cdn-cgi/image/f=jpeg/article/1161b.jpg?v=1713862773"
+                  alt="Чтение"
+                />
+                <div class="hobby-card__overlay">
+                  <span class="hobby-card__label">Чтение</span>
+                </div>
+              </div>
+
+              <div class="hobby-card">
+                <img
+                  class="hobby-card__img"
+                  src="https://soberhotel.ru/wp-content/uploads/2023/10/treking_foto-1024x490.jpg"
+                  alt="Пешие прогулки"
+                />
+                <div class="hobby-card__overlay">
+                  <span class="hobby-card__label">Пешие прогулки</span>
+                </div>
+              </div>
+
+              <div class="hobby-card">
+                <img
+                  class="hobby-card__img"
+                  src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Opening_chess_position_from_black_side.jpg"
+                  alt="Шахматы"
+                />
+                <div class="hobby-card__overlay">
+                  <span class="hobby-card__label">Шахматы</span>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- Блок "Последние статьи" -->
+          <section>
+            <h2 class="section-title">Последние статьи</h2>
+
+            <div class="articles-preview">
+
+              <article class="article-preview">
+                <img
+                  class="article-preview__img"
+                  src="https://dac.digital/wp-content/uploads/2023/04/backend-java-optimized.png"
+                  alt="Java"
+                />
+                <div>
+                  <h3 class="article-preview__title">
+                    Почему Java остаётся востребованным языком в 2024 году
+                  </h3>
+                  <p class="article-preview__date">Опубликовано: 10 декабря 2024</p>
+                  <p class="article-preview__text">
+                    Java существует уже почти 30 лет, но по-прежнему входит в
+                    топ самых популярных языков. Разберём, почему
+                    платформонезависимость и зрелая экосистема делают его
+                    отличным выбором для бэкенд-разработки.
+                  </p>
+                </div>
+              </article>
+
+              <article class="article-preview">
+                <img
+                  class="article-preview__img"
+                  src="https://trendnologies.com/wp-content/uploads/2025/02/CJFI-1.png.webp"
+                  alt="C++ vs Java"
+                />
+                <div>
+                  <h3 class="article-preview__title">
+                    C++ vs Java: что выбрать начинающему разработчику
+                  </h3>
+                  <p class="article-preview__date">Опубликовано: 25 ноября 2024</p>
+                  <p class="article-preview__text">
+                    Сравним управление памятью, производительность и перспективы
+                    трудоустройства, чтобы помочь с выбором первого серьёзного
+                    языка для углублённого изучения.
+                  </p>
+                </div>
+              </article>
+
+              <article class="article-preview">
+                <img
+                  class="article-preview__img"
+                  src="https://blog.jetbrains.com/wp-content/uploads/2019/02/JB_Academy_1280x800_3.png"
+                  alt="Hyperskill"
+                />
+                <div>
+                  <h3 class="article-preview__title">
+                    Мой опыт курса Java Backend Developer на Hyperskill
+                  </h3>
+                  <p class="article-preview__date">Опубликовано: 5 ноября 2024</p>
+                  <p class="article-preview__text">
+                    Честный отзыв о платформе JetBrains Hyperskill: структура
+                    курса, практические задания и советы для тех, кто хочет
+                    освоить серверную разработку на Java.
+                  </p>
+                </div>
+              </article>
+
+            </div>
+
+            <a class="all-articles-link" href="blog.html">Посмотреть все статьи →</a>
+          </section>
+
         </div>
-
-        <a class="all-articles-link" href="blog.html"
-          >Посмотреть все статьи →</a
-        >
-      </section>
+      </div>
     </main>
 
     <!-- Футер -->
-    <footer>
-      <div class="footer-inner">
+    <footer class="footer">
+      <div class="footer__inner">
         <div>
-          <h2>Контакты</h2>
-          <p>Email: <a href="mailto:student@nstu.ru">student@nstu.ru</a></p>
-          <p>Телефон: +7 (999) 123-45-67</p>
+          <h2 class="footer__title">Контакты</h2>
+          <p class="footer__text">
+            Email: <a class="footer__link" href="mailto:student@nstu.ru">student@nstu.ru</a>
+          </p>
+          <p class="footer__text">Телефон: +7 (999) 123-45-67</p>
         </div>
         <div>
-          <h2>Социальные сети</h2>
-          <div class="social-links">
-            <a href="#">Instagram</a>
-            <a href="#">Twitter</a>
-            <a href="#">LinkedIn</a>
-            <a href="#">GitHub</a>
+          <h2 class="footer__title">Социальные сети</h2>
+          <div class="footer__social">
+            <a class="footer__social-link" href="#">Instagram</a>
+            <a class="footer__social-link" href="#">Twitter</a>
+            <a class="footer__social-link" href="#">LinkedIn</a>
+            <a class="footer__social-link" href="#">GitHub</a>
           </div>
         </div>
       </div>
     </footer>
+
   </body>
 </html>
