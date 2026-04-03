@@ -16,11 +16,67 @@ document.addEventListener('DOMContentLoaded', function () {
   const inputTitle     = document.getElementById('post-title');
   const inputText      = document.getElementById('post-text');
   const blogGrid       = document.getElementById('blog-grid');
+  const emptyState     = document.getElementById('blog-empty');
   const statsDialog    = document.getElementById('stats-dialog');
   const statsPostCount = document.getElementById('stats-post-count');
   const btnDialogClose = document.getElementById('btn-dialog-close');
   const btnDialogX     = document.getElementById('btn-dialog-x');
   const postTemplate   = document.getElementById('post-template');
+
+  // Ключ для хранения статей в localStorage
+  const STORAGE_KEY = 'blog_posts';
+
+  // ---------------------------------------------------
+  // localStorage: чтение и запись
+  // ---------------------------------------------------
+
+  // Читаем массив статей из localStorage.
+  // Если ничего нет — возвращаем пустой массив.
+  function loadPostsFromStorage() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    try {
+      return JSON.parse(raw);  // строку превращаем обратно в массив объектов
+    } catch (e) {
+      return [];
+    }
+  }
+
+  // Сохраняем массив статей в localStorage.
+  // JSON.stringify превращает массив объектов в строку — localStorage умеет
+  // хранить только строки.
+  function savePostsToStorage(posts) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+  }
+
+  // Добавляем одну новую статью в конец массива и сохраняем.
+  function appendPostToStorage(post) {
+    const posts = loadPostsFromStorage();
+    posts.push(post);
+    savePostsToStorage(posts);
+  }
+
+  // Удаляем статью по её уникальному id.
+  function removePostFromStorage(id) {
+    const posts = loadPostsFromStorage();
+    const updated = posts.filter(function (p) { return p.id !== id; });
+    savePostsToStorage(updated);
+  }
+
+  // ---------------------------------------------------
+  // Состояние "нет статей"
+  // Показываем/скрываем блок-заглушку в зависимости
+  // от количества карточек в сетке
+  // ---------------------------------------------------
+
+  function updateEmptyState() {
+    const hasPosts = blogGrid.querySelectorAll('.blog-card').length > 0;
+    if (hasPosts) {
+      emptyState.classList.add('blog-empty--hidden');
+    } else {
+      emptyState.classList.remove('blog-empty--hidden');
+    }
+  }
 
   // ---------------------------------------------------
   // Подсчёт карточек
@@ -40,35 +96,38 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function hideForm() {
-    // Убираем класс visible — форма плавно скрывается (анимация в CSS)
     formSection.classList.remove('visible');
-    // Сбрасываем поля формы
     inputTitle.value = '';
     inputText.value  = '';
   }
 
   btnCreatePost.addEventListener('click', showForm);
-
-  // Кнопка "Отмена" — очищает и скрывает форму
   btnCancel.addEventListener('click', hideForm);
 
+  // Кнопка "Создать статью" в блоке пустого состояния тоже открывает форму
+  const btnEmptyCreate = document.getElementById('btn-empty-create');
+  if (btnEmptyCreate) {
+    btnEmptyCreate.addEventListener('click', showForm);
+  }
+
   // ---------------------------------------------------
-  // Удаление карточки статьи
+  // Удаление карточки
   // ---------------------------------------------------
 
   function deleteCard(card) {
-    // Добавляем класс анимации исчезновения
+    const postId = card.dataset.id;  // берём id из data-атрибута карточки
+
     card.classList.add('blog-card--removing');
 
-    // После завершения анимации (300ms) удаляем элемент из DOM
     card.addEventListener('animationend', function () {
       card.remove();
+      removePostFromStorage(postId);  // удаляем из localStorage
+      updateEmptyState();             // обновляем состояние пустой страницы
     });
   }
 
   // ---------------------------------------------------
-  // Создание кнопки удаления и добавление обработчика
-  // Вызывается для каждой карточки — и существующих, и новых
+  // Кнопка удаления на карточке
   // ---------------------------------------------------
 
   function addDeleteButton(card) {
@@ -84,60 +143,91 @@ document.addEventListener('DOMContentLoaded', function () {
     card.appendChild(btn);
   }
 
-  // Добавляем кнопку удаления на все существующие карточки при загрузке
-  blogGrid.querySelectorAll('.blog-card').forEach(function (card) {
-    addDeleteButton(card);
-  });
-
   // ---------------------------------------------------
-  // Добавление новой карточки через <template>
+  // Отрисовка карточки в DOM
+  // Используется и при добавлении новой, и при загрузке из localStorage
   // ---------------------------------------------------
 
-  function addPost(title, text, date) {
-    // Клонируем template
+  function renderCard(post) {
     const clone = postTemplate.content.cloneNode(true);
 
-    // Заполняем данными из формы
-    clone.querySelector('.post-title').textContent = title;
-    clone.querySelector('.post-date').textContent  = date;
-    clone.querySelector('.post-text').textContent  = text;
+    clone.querySelector('.post-title').textContent = post.title;
+    clone.querySelector('.post-date').textContent  = post.date;
+    clone.querySelector('.post-text').textContent  = post.text;
 
-    // querySelector на DocumentFragment не возвращает сам корневой элемент,
-    // поэтому получаем карточку после вставки в DOM
+    // Вставляем в начало сетки
     blogGrid.insertBefore(clone, blogGrid.firstChild);
 
-    // Теперь карточка уже в DOM — берём первый дочерний элемент сетки
+    // Получаем только что вставленную карточку
     const newCard = blogGrid.firstElementChild;
+
+    // Сохраняем id статьи в data-атрибуте карточки,
+    // чтобы потом знать какую запись удалять из localStorage
+    newCard.dataset.id = post.id;
+
     addDeleteButton(newCard);
   }
 
   // ---------------------------------------------------
-  // Кнопка "Сохранить" — читает данные из формы и добавляет статью
+  // Кнопка "Сохранить"
   // ---------------------------------------------------
 
   btnSave.addEventListener('click', function () {
     const title = inputTitle.value.trim();
     const text  = inputText.value.trim();
 
-    // Валидация: оба поля обязательны
     if (!title || !text) {
       alert('Пожалуйста, заполните все обязательные поля.');
       return;
     }
 
-    // Формируем текущую дату в читаемом формате
     const date = new Date().toLocaleDateString('ru-RU', {
       day:   'numeric',
       month: 'long',
       year:  'numeric',
     });
 
-    // Добавляем статью на страницу
-    addPost(title, text, date);
+    // Создаём объект статьи с уникальным id на основе текущего времени
+    const post = {
+      id:    Date.now().toString(),
+      title: title,
+      text:  text,
+      date:  date,
+    };
 
-    // Сбрасываем и скрываем форму
+    // Сохраняем в localStorage
+    appendPostToStorage(post);
+
+    // Отрисовываем карточку на странице
+    renderCard(post);
+
+    // Обновляем состояние пустой страницы
+    updateEmptyState();
+
+    // Скрываем форму
     hideForm();
   });
+
+  // ---------------------------------------------------
+  // Загрузка статей из localStorage при открытии страницы
+  // ---------------------------------------------------
+
+  function loadPostsOnInit() {
+    const posts = loadPostsFromStorage();
+
+    // Отрисовываем каждую сохранённую статью.
+    // Разворачиваем массив чтобы новые статьи оказались сверху
+    // (renderCard вставляет в начало, поэтому без reverse порядок перевернётся)
+    posts.slice().reverse().forEach(function (post) {
+      renderCard(post);
+    });
+
+    // После отрисовки обновляем состояние пустой страницы
+    updateEmptyState();
+  }
+
+  // Запускаем загрузку при старте
+  loadPostsOnInit();
 
   // ---------------------------------------------------
   // Диалог статистики
@@ -156,7 +246,6 @@ document.addEventListener('DOMContentLoaded', function () {
     statsDialog.close();
   });
 
-  // Закрыть при клике вне диалога (по затемнённому фону)
   statsDialog.addEventListener('click', function (event) {
     if (event.target === statsDialog) {
       statsDialog.close();
