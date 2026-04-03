@@ -3,7 +3,7 @@
 =================================================== */
 
 /* ---------------------------------------------------
-   Layout: сайдбар + контент рядом
+   Layout
 --------------------------------------------------- */
 
 .blog-layout {
@@ -54,10 +54,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
 }
 
-.admin-sidebar__btn:hover {
+.admin-sidebar__btn:hover:not(:disabled) {
   background-color: var(--color-bg-card-alt);
   border-color: var(--color-accent);
   color: var(--color-accent);
@@ -69,10 +69,16 @@
   border-color: var(--color-accent);
 }
 
-.admin-sidebar__btn--primary:hover {
+.admin-sidebar__btn--primary:hover:not(:disabled) {
   background-color: var(--color-accent-hover);
   border-color: var(--color-accent-hover);
   color: #ffffff;
+}
+
+/* Disabled-состояние кнопок */
+.admin-sidebar__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 /* ---------------------------------------------------
@@ -88,6 +94,57 @@
 }
 
 /* ---------------------------------------------------
+   Контейнер сетки — позиционирование для лоадера
+--------------------------------------------------- */
+
+.blog-grid-wrapper {
+  position: relative;
+  min-height: 120px;
+}
+
+/* ---------------------------------------------------
+   Лоадер — три прыгающие точки
+   Показывается поверх контейнера со статьями
+--------------------------------------------------- */
+
+.blog-loader {
+  display: none;          /* скрыт по умолчанию */
+  position: absolute;
+  inset: 0;
+  /* Полупрозрачный фон чтобы лоадер выглядел как оверлей */
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+/* Когда лоадер активен — показываем его */
+.blog-loader--active {
+  display: flex;
+}
+
+/* Три точки лоадера */
+.blog-loader__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  animation: loader-bounce 0.8s ease-in-out infinite;
+}
+
+/* Каждая точка прыгает с небольшой задержкой */
+.blog-loader__dot:nth-child(1) { animation-delay: 0s; }
+.blog-loader__dot:nth-child(2) { animation-delay: 0.15s; }
+.blog-loader__dot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes loader-bounce {
+  0%, 80%, 100% { transform: translateY(0);    opacity: 0.4; }
+  40%           { transform: translateY(-10px); opacity: 1;   }
+}
+
+/* ---------------------------------------------------
    Сетка карточек статей
 --------------------------------------------------- */
 
@@ -99,11 +156,9 @@
 
 /* ---------------------------------------------------
    Состояние "нет статей"
-   Показывается когда в сетке нет карточек
 --------------------------------------------------- */
 
 .blog-empty {
-  /* Занимает всю ширину сетки (3 колонки) */
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
@@ -140,7 +195,6 @@
   margin-top: 8px;
 }
 
-/* Скрываем пустой блок когда есть карточки */
 .blog-empty--hidden {
   display: none;
 }
@@ -231,7 +285,6 @@
   transform: scale(1.1);
 }
 
-/* Анимация удаления карточки */
 .blog-card--removing {
   animation: card-remove 0.3s ease forwards;
 }
@@ -239,6 +292,24 @@
 @keyframes card-remove {
   0%   { opacity: 1; transform: scale(1); }
   100% { opacity: 0; transform: scale(0.85); }
+}
+
+/* ---------------------------------------------------
+   Disabled-состояние формы
+--------------------------------------------------- */
+
+/* Когда форма заблокирована — поля и кнопки становятся серыми */
+.create-article-form--disabled input,
+.create-article-form--disabled textarea {
+  opacity: 0.5;
+  pointer-events: none;   /* клики не проходят */
+  background-color: #f3f4f6;
+}
+
+.create-article-form--disabled .btn {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* ---------------------------------------------------
