@@ -11,71 +11,92 @@ document.addEventListener('DOMContentLoaded', function () {
   const btnCreatePost  = document.getElementById('btn-create-post');
   const btnShowStats   = document.getElementById('btn-show-stats');
   const formSection    = document.getElementById('create-article-section');
+  const formEl         = document.querySelector('.create-article-form');
   const btnCancel      = document.getElementById('btn-cancel');
   const btnSave        = document.getElementById('btn-save');
   const inputTitle     = document.getElementById('post-title');
   const inputText      = document.getElementById('post-text');
+  const blogGridWrapper = document.getElementById('blog-grid-wrapper');
   const blogGrid       = document.getElementById('blog-grid');
+  const blogLoader     = document.getElementById('blog-loader');
   const emptyState     = document.getElementById('blog-empty');
   const statsDialog    = document.getElementById('stats-dialog');
   const statsPostCount = document.getElementById('stats-post-count');
   const btnDialogClose = document.getElementById('btn-dialog-close');
   const btnDialogX     = document.getElementById('btn-dialog-x');
   const postTemplate   = document.getElementById('post-template');
+  const btnEmptyCreate = document.getElementById('btn-empty-create');
 
-  // Ключ для хранения статей в localStorage
   const STORAGE_KEY = 'blog_posts';
 
   // ---------------------------------------------------
-  // localStorage: чтение и запись
+  // localStorage
   // ---------------------------------------------------
 
-  // Читаем массив статей из localStorage.
-  // Если ничего нет — возвращаем пустой массив.
   function loadPostsFromStorage() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
-    try {
-      return JSON.parse(raw);  // строку превращаем обратно в массив объектов
-    } catch (e) {
-      return [];
-    }
+    try { return JSON.parse(raw); } catch (e) { return []; }
   }
 
-  // Сохраняем массив статей в localStorage.
-  // JSON.stringify превращает массив объектов в строку — localStorage умеет
-  // хранить только строки.
   function savePostsToStorage(posts) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
   }
 
-  // Добавляем одну новую статью в конец массива и сохраняем.
   function appendPostToStorage(post) {
     const posts = loadPostsFromStorage();
     posts.push(post);
     savePostsToStorage(posts);
   }
 
-  // Удаляем статью по её уникальному id.
   function removePostFromStorage(id) {
     const posts = loadPostsFromStorage();
-    const updated = posts.filter(function (p) { return p.id !== id; });
-    savePostsToStorage(updated);
+    savePostsToStorage(posts.filter(function (p) { return p.id !== id; }));
   }
 
   // ---------------------------------------------------
-  // Состояние "нет статей"
-  // Показываем/скрываем блок-заглушку в зависимости
-  // от количества карточек в сетке
+  // Лоадер
+  // showLoader()  — показывает лоадер над сеткой
+  // hideLoader()  — скрывает лоадер
+  // ---------------------------------------------------
+
+  function showLoader() {
+    blogLoader.classList.add('blog-loader--active');
+  }
+
+  function hideLoader() {
+    blogLoader.classList.remove('blog-loader--active');
+  }
+
+  // ---------------------------------------------------
+  // Disable / Enable кнопок и формы
+  // Блокируем всё чтобы нельзя было кликать в процессе загрузки
+  // ---------------------------------------------------
+
+  function setUIDisabled(disabled) {
+    // Кнопки сайдбара
+    btnCreatePost.disabled = disabled;
+    btnShowStats.disabled  = disabled;
+
+    // Кнопки формы
+    btnSave.disabled   = disabled;
+    btnCancel.disabled = disabled;
+
+    // Поля формы — через класс на форме (стили в CSS)
+    if (disabled) {
+      formEl.classList.add('create-article-form--disabled');
+    } else {
+      formEl.classList.remove('create-article-form--disabled');
+    }
+  }
+
+  // ---------------------------------------------------
+  // Пустое состояние
   // ---------------------------------------------------
 
   function updateEmptyState() {
     const hasPosts = blogGrid.querySelectorAll('.blog-card').length > 0;
-    if (hasPosts) {
-      emptyState.classList.add('blog-empty--hidden');
-    } else {
-      emptyState.classList.remove('blog-empty--hidden');
-    }
+    emptyState.classList.toggle('blog-empty--hidden', hasPosts);
   }
 
   // ---------------------------------------------------
@@ -87,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ---------------------------------------------------
-  // Показать / скрыть форму
+  // Форма: показать / скрыть
   // ---------------------------------------------------
 
   function showForm() {
@@ -103,9 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   btnCreatePost.addEventListener('click', showForm);
   btnCancel.addEventListener('click', hideForm);
-
-  // Кнопка "Создать статью" в блоке пустого состояния тоже открывает форму
-  const btnEmptyCreate = document.getElementById('btn-empty-create');
   if (btnEmptyCreate) {
     btnEmptyCreate.addEventListener('click', showForm);
   }
@@ -115,61 +133,47 @@ document.addEventListener('DOMContentLoaded', function () {
   // ---------------------------------------------------
 
   function deleteCard(card) {
-    const postId = card.dataset.id;  // берём id из data-атрибута карточки
-
+    const postId = card.dataset.id;
     card.classList.add('blog-card--removing');
-
     card.addEventListener('animationend', function () {
       card.remove();
-      removePostFromStorage(postId);  // удаляем из localStorage
-      updateEmptyState();             // обновляем состояние пустой страницы
+      removePostFromStorage(postId);
+      updateEmptyState();
     });
   }
-
-  // ---------------------------------------------------
-  // Кнопка удаления на карточке
-  // ---------------------------------------------------
 
   function addDeleteButton(card) {
     const btn = document.createElement('button');
     btn.className = 'blog-card__delete';
     btn.title     = 'Удалить статью';
     btn.innerHTML = '✕';
-
-    btn.addEventListener('click', function () {
-      deleteCard(card);
-    });
-
+    btn.addEventListener('click', function () { deleteCard(card); });
     card.appendChild(btn);
   }
 
   // ---------------------------------------------------
-  // Отрисовка карточки в DOM
-  // Используется и при добавлении новой, и при загрузке из localStorage
+  // Отрисовка одной карточки в DOM
   // ---------------------------------------------------
 
   function renderCard(post) {
     const clone = postTemplate.content.cloneNode(true);
-
     clone.querySelector('.post-title').textContent = post.title;
     clone.querySelector('.post-date').textContent  = post.date;
     clone.querySelector('.post-text').textContent  = post.text;
 
-    // Вставляем в начало сетки
-    blogGrid.insertBefore(clone, blogGrid.firstChild);
+    // Вставляем перед блоком "нет статей" (emptyState),
+    // чтобы карточки всегда были выше заглушки внутри grid
+    blogGrid.insertBefore(clone, emptyState);
 
-    // Получаем только что вставленную карточку
-    const newCard = blogGrid.firstElementChild;
-
-    // Сохраняем id статьи в data-атрибуте карточки,
-    // чтобы потом знать какую запись удалять из localStorage
+    const newCard = emptyState.previousElementSibling;
     newCard.dataset.id = post.id;
-
     addDeleteButton(newCard);
   }
 
   // ---------------------------------------------------
   // Кнопка "Сохранить"
+  // Читает данные из формы, сохраняет в localStorage,
+  // показывает лоадер с имитацией задержки
   // ---------------------------------------------------
 
   btnSave.addEventListener('click', function () {
@@ -182,12 +186,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const date = new Date().toLocaleDateString('ru-RU', {
-      day:   'numeric',
-      month: 'long',
-      year:  'numeric',
+      day: 'numeric', month: 'long', year: 'numeric',
     });
 
-    // Создаём объект статьи с уникальным id на основе текущего времени
     const post = {
       id:    Date.now().toString(),
       title: title,
@@ -195,38 +196,51 @@ document.addEventListener('DOMContentLoaded', function () {
       date:  date,
     };
 
-    // Сохраняем в localStorage
-    appendPostToStorage(post);
+    // Блокируем UI и показываем лоадер
+    setUIDisabled(true);
+    showLoader();
 
-    // Отрисовываем карточку на странице
-    renderCard(post);
+    // Имитируем задержку сохранения (800мс)
+    setTimeout(function () {
+      appendPostToStorage(post);
+      renderCard(post);
+      updateEmptyState();
 
-    // Обновляем состояние пустой страницы
-    updateEmptyState();
-
-    // Скрываем форму
-    hideForm();
+      // Снимаем лоадер и разблокируем UI
+      hideLoader();
+      setUIDisabled(false);
+      hideForm();
+    }, 800);
   });
 
   // ---------------------------------------------------
   // Загрузка статей из localStorage при открытии страницы
+  // Запускается с задержкой для имитации загрузки
   // ---------------------------------------------------
 
   function loadPostsOnInit() {
-    const posts = loadPostsFromStorage();
+    // Блокируем UI и показываем лоадер
+    setUIDisabled(true);
+    showLoader();
 
-    // Отрисовываем каждую сохранённую статью.
-    // Разворачиваем массив чтобы новые статьи оказались сверху
-    // (renderCard вставляет в начало, поэтому без reverse порядок перевернётся)
-    posts.slice().reverse().forEach(function (post) {
-      renderCard(post);
-    });
+    // Имитируем задержку первоначальной загрузки (1200мс)
+    setTimeout(function () {
+      const posts = loadPostsFromStorage();
 
-    // После отрисовки обновляем состояние пустой страницы
-    updateEmptyState();
+      // slice().reverse() — чтобы новые статьи были сверху
+      // (renderCard вставляет в начало, без reverse порядок перевернётся)
+      posts.slice().reverse().forEach(function (post) {
+        renderCard(post);
+      });
+
+      updateEmptyState();
+
+      // Скрываем лоадер и разблокируем UI
+      hideLoader();
+      setUIDisabled(false);
+    }, 1200);
   }
 
-  // Запускаем загрузку при старте
   loadPostsOnInit();
 
   // ---------------------------------------------------
@@ -238,18 +252,11 @@ document.addEventListener('DOMContentLoaded', function () {
     statsDialog.showModal();
   });
 
-  btnDialogX.addEventListener('click', function () {
-    statsDialog.close();
-  });
-
-  btnDialogClose.addEventListener('click', function () {
-    statsDialog.close();
-  });
+  btnDialogX.addEventListener('click', function () { statsDialog.close(); });
+  btnDialogClose.addEventListener('click', function () { statsDialog.close(); });
 
   statsDialog.addEventListener('click', function (event) {
-    if (event.target === statsDialog) {
-      statsDialog.close();
-    }
+    if (event.target === statsDialog) statsDialog.close();
   });
 
 });

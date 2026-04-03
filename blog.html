@@ -16,7 +16,6 @@
       </ul>
     </nav>
 
-    <!-- Layout: сайдбар + основной контент -->
     <div class="container">
       <div class="blog-layout">
 
@@ -47,25 +46,35 @@
           <section>
             <h1>Статьи</h1>
 
-            <div class="blog-grid" id="blog-grid">
+            <!-- Обёртка нужна чтобы лоадер позиционировался поверх сетки -->
+            <div class="blog-grid-wrapper" id="blog-grid-wrapper">
 
-              <!-- Статичных статей нет — они загружаются из localStorage через JS -->
-
-              <!-- Состояние "нет статей" — видно когда сетка пустая -->
-              <div class="blog-empty" id="blog-empty">
-                <span class="blog-empty__icon">📄</span>
-                <p class="blog-empty__title">Статей пока нет</p>
-                <p class="blog-empty__text">
-                  Создайте первую статью с помощью кнопки в боковой панели
-                </p>
-                <button
-                  id="btn-empty-create"
-                  class="btn btn--primary blog-empty__btn"
-                >
-                  ✏️ Создать статью
-                </button>
+              <!-- Лоадер — три прыгающие точки -->
+              <div class="blog-loader" id="blog-loader">
+                <span class="blog-loader__dot"></span>
+                <span class="blog-loader__dot"></span>
+                <span class="blog-loader__dot"></span>
               </div>
 
+              <!-- Сетка карточек — заполняется из JS / localStorage -->
+              <div class="blog-grid" id="blog-grid">
+
+                <!-- Состояние "нет статей" -->
+                <div class="blog-empty" id="blog-empty">
+                  <span class="blog-empty__icon">📄</span>
+                  <p class="blog-empty__title">Статей пока нет</p>
+                  <p class="blog-empty__text">
+                    Создайте первую статью с помощью кнопки в боковой панели
+                  </p>
+                  <button
+                    id="btn-empty-create"
+                    class="btn btn--primary blog-empty__btn"
+                  >
+                    ✏️ Создать статью
+                  </button>
+                </div>
+
+              </div>
             </div>
           </section>
 
@@ -114,7 +123,6 @@
 
       </div>
     </div>
-    <!-- /container -->
 
 
     <!-- Диалог статистики -->
