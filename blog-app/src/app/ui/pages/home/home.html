@@ -203,4 +203,13 @@
       </section>
     </div>
   </div>
+  <section>
+    <h2 class="section-title">Последние статьи</h2>
+    <div class="articles-preview">
+      @for (article of articles; track article.id) {
+        <app-article-card-home [article]="article"></app-article-card-home>
+      }
+    </div>
+    <a class="all-articles-link" routerLink="/blog">Посмотреть все статьи →</a>
+  </section>
 </main>
