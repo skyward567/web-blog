@@ -8,6 +8,23 @@
     <h2 class="blog-card__title">{{ article.title }}</h2>
     <p class="blog-card__date">{{ article.date }}</p>
     <p class="blog-card__text">{{ article.text }}</p>
-    <button class="blog-card__delete" (click)="onDelete()">✕</button>
+  </div>
+
+  <!-- Кнопки появляются при наведении на карточку -->
+  <div class="blog-card__actions">
+    <button
+      class="blog-card__action-btn blog-card__action-btn--edit"
+      title="Редактировать статью"
+      (click)="onEdit()"
+    >
+      ✏️
+    </button>
+    <button
+      class="blog-card__action-btn blog-card__action-btn--delete"
+      title="Удалить статью"
+      (click)="onDelete()"
+    >
+      ✕
+    </button>
   </div>
 </div>
