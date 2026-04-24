@@ -1,0 +1,71 @@
+.create-article-form {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 600px;
+
+  &__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  &__label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+  }
+
+  &__input,
+  &__textarea {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    outline: none;
+    width: 100%;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+
+    &:focus {
+      border-color: var(--color-accent);
+    }
+
+    // Красная рамка у невалидного поля
+    &--error {
+      border-color: #ef4444;
+
+      &:focus {
+        border-color: #ef4444;
+      }
+    }
+  }
+
+  // Красная подпись с ошибкой — мелким шрифтом до 12px
+  &__error {
+    font-size: 11px;
+    color: #ef4444;
+    margin-top: 2px;
+  }
+
+  &__buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+}
+
+// Disabled-состояние кнопки сохранения
+.btn--primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

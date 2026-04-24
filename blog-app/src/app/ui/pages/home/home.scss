@@ -137,6 +137,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  max-width: 700px;
 }
 
 .article-preview {
@@ -193,4 +194,8 @@
   margin-top: 12px;
   font-weight: 500;
   color: var(--color-accent);
+}
+
+app-article-card-home {
+  display: block;
 }

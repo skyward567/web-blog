@@ -1,42 +1,76 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Article } from '../../../models/article';
 
 @Component({
   selector: 'app-article-form',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './article-form.html',
   styleUrl: './article-form.scss',
 })
-export class ArticleForm {
-  @Output() save = new EventEmitter<Article>();
-  @Output() cancel = new EventEmitter<void>();
+export class ArticleForm implements OnInit {
+  // Если передана статья — форма в режиме редактирования
+  // Если null — режим добавления
+  @Input() public editArticle: Article | null = null;
 
-  title = '';
-  text = '';
+  @Output() public save = new EventEmitter<Article>();
+  @Output() public cancel = new EventEmitter<void>();
 
-  onSave() {
-    if (!this.title.trim() || !this.text.trim()) return;
+  protected form!: FormGroup;
+
+  // Заголовок и текст кнопки зависят от режима
+  protected get formTitle(): string {
+    return this.editArticle ? 'Изменить статью' : 'Создать статью';
+  }
+
+  protected get saveLabel(): string {
+    return this.editArticle ? 'Сохранить' : 'Добавить';
+  }
+
+  // Геттеры для удобного доступа к полям в шаблоне
+  protected get titleControl() {
+    return this.form.get('title');
+  }
+  protected get textControl() {
+    return this.form.get('text');
+  }
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      // Заголовок: обязательный, минимум 25 символов
+      title: [this.editArticle?.title ?? '', [Validators.required, Validators.minLength(25)]],
+      // Текст: только обязательный
+      text: [this.editArticle?.text ?? '', [Validators.required]],
+    });
+  }
+
+  protected onSave(): void {
+    if (this.form.invalid) return;
+
+    const { title, text } = this.form.value;
 
     const article: Article = {
-      id: Date.now(),
-      title: this.title.trim(),
-      text: this.text.trim(),
-      date: new Date().toLocaleDateString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      }),
+      // При редактировании сохраняем старый id и дату
+      id: this.editArticle?.id ?? Date.now(),
+      date:
+        this.editArticle?.date ??
+        new Date().toLocaleDateString('ru-RU', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }),
+      title: title.trim(),
+      text: text.trim(),
     };
 
     this.save.emit(article);
-    this.title = '';
-    this.text = '';
+    this.form.reset();
   }
 
-  onCancel() {
-    this.title = '';
-    this.text = '';
+  protected onCancel(): void {
+    this.form.reset();
     this.cancel.emit();
   }
 }

@@ -1,23 +1,49 @@
 <div class="create-article-form">
-  <div>
-    <label class="create-article-form__label">Заголовок *</label>
-    <input
-      class="create-article-form__input"
-      [(ngModel)]="title"
-      placeholder="Введите заголовок статьи"
-    />
-  </div>
-  <div>
-    <label class="create-article-form__label">Текст *</label>
-    <textarea
-      class="create-article-form__textarea"
-      [(ngModel)]="text"
-      rows="5"
-      placeholder="Введите текст статьи"
-    ></textarea>
-  </div>
-  <div class="create-article-form__buttons">
-    <button class="btn btn--primary" (click)="onSave()">Сохранить</button>
-    <button class="btn btn--secondary" (click)="onCancel()">Отмена</button>
-  </div>
+  <h2 class="create-article-form__title">{{ formTitle }}</h2>
+
+  <form [formGroup]="form">
+    <!-- Поле "Заголовок" -->
+    <div class="create-article-form__field">
+      <label class="create-article-form__label">Заголовок *</label>
+      <input
+        class="create-article-form__input"
+        [class.create-article-form__input--error]="titleControl?.invalid && titleControl?.touched"
+        formControlName="title"
+        placeholder="Введите заголовок статьи (минимум 25 символов)"
+      />
+      <!-- Ошибки показываются только после того как пользователь тронул поле -->
+      @if (titleControl?.touched && titleControl?.hasError('required')) {
+        <span class="create-article-form__error">Заголовок обязателен для заполнения</span>
+      }
+      @if (titleControl?.touched && titleControl?.hasError('minlength')) {
+        <span class="create-article-form__error">
+          Минимальная длина заголовка — 25 символов (сейчас {{ titleControl?.value?.length ?? 0 }})
+        </span>
+      }
+    </div>
+
+    <!-- Поле "Текст" -->
+    <div class="create-article-form__field">
+      <label class="create-article-form__label">Текст *</label>
+      <textarea
+        class="create-article-form__textarea"
+        [class.create-article-form__textarea--error]="textControl?.invalid && textControl?.touched"
+        formControlName="text"
+        rows="5"
+        placeholder="Введите текст статьи"
+      ></textarea>
+      @if (textControl?.touched && textControl?.hasError('required')) {
+        <span class="create-article-form__error">Текст статьи обязателен для заполнения</span>
+      }
+    </div>
+
+    <!-- Кнопки -->
+    <div class="create-article-form__buttons">
+      <!-- disabled когда форма невалидна -->
+      <button class="btn btn--primary" type="button" [disabled]="form.invalid" (click)="onSave()">
+        {{ saveLabel }}
+      </button>
+      <button class="btn btn--secondary" type="button" (click)="onCancel()">Отмена</button>
+    </div>
+  </form>
 </div>

@@ -8,10 +8,15 @@ import { Article } from '../../../models/article';
   styleUrl: './article-card-blog.scss',
 })
 export class ArticleCardBlog {
-  @Input() article!: Article;
-  @Output() delete = new EventEmitter<number>();
+  @Input() public article!: Article;
+  @Output() public delete = new EventEmitter<number>();
+  @Output() public edit = new EventEmitter<Article>();
 
-  onDelete() {
+  protected onDelete(): void {
     this.delete.emit(this.article.id);
+  }
+
+  protected onEdit(): void {
+    this.edit.emit(this.article);
   }
 }
