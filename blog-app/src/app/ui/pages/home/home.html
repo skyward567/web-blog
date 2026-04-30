@@ -13,141 +13,77 @@
           <p>
             Добро пожаловать! Я студент 4 курса Новосибирского Государственного Технического
             Университета. На этом блоге я делюсь своими знаниями, проектами и идеями в области
-            программирования. Здесь вы найдёте заметки об изученных языках, разборы технологий и
-            мысли о современной разработке программного обеспечения.
+            программирования.
           </p>
           <p>
             В свободное время стараюсь повышать свой уровень знаний, выбирая курсы по востребованным
-            языкам и технологиям. Углублённо изучаю Java — считаю его современным
-            платформонезависимым языком с широким применением в бэкенд-разработке.
+            языкам и технологиям. Углублённо изучаю Java.
           </p>
         </div>
       </section>
 
-      <!-- Блок "Образование" -->
+      <!-- Блок "Образование" — через @for -->
       <section>
         <h2 class="section-title">Образование</h2>
-
-        <div class="experience-item">
-          <h3>Новосибирский Государственный Технический Университет</h3>
-          <p class="experience-item__meta">4 курс — по настоящее время</p>
-          <p class="experience-item__meta">
-            Факультет автоматики и вычислительной техники.<br />
-            Специальность: «Информатика и вычислительная техника».<br />
-            Направление: «Программное обеспечение компьютерных систем и сетей».
-          </p>
-        </div>
-
-        <div class="experience-item">
-          <h3>Курсы и сертификации</h3>
-          <ul class="dash-list">
-            <li class="dash-list__item">Java Developer — Hyperskill.org (JetBrains)</li>
-            <li class="dash-list__item">Java Backend Developer — Hyperskill.org (JetBrains)</li>
-          </ul>
-        </div>
+        @for (item of education; track item.title) {
+          <div class="experience-item">
+            <h3>{{ item.title }}</h3>
+            @if (item.meta) {
+              <p class="experience-item__meta">{{ item.meta }}</p>
+            }
+            <p class="experience-item__meta">{{ item.description }}</p>
+          </div>
+        }
       </section>
 
-      <!-- Блок "Опыт работы" -->
+      <!-- Блок "Опыт работы" — через @for -->
       <section>
         <h2 class="section-title">Опыт работы</h2>
-
-        <div class="experience-item">
-          <h3>Коммерческий опыт</h3>
-          <p class="experience-item__meta">
-            Опыта в коммерческой разработке в рамках каких-либо организаций пока нет, стажировок в
-            компаниях не проходил.
-          </p>
-        </div>
-
-        <div class="experience-item">
-          <h3>Учебные и личные проекты</h3>
-          <p class="experience-item__meta">
-            В рамках учёбы в университете и на интернет-курсах выполнялись небольшие проекты, как
-            правило индивидуально. Опыт командной работы складывается из совместного выполнения
-            лабораторных работ бригадами в рамках университета.
-          </p>
-        </div>
+        @for (item of experience; track item.title) {
+          <div class="experience-item">
+            <h3>{{ item.title }}</h3>
+            <p class="experience-item__meta">{{ item.description }}</p>
+          </div>
+        }
       </section>
 
-      <!-- Блок "Навыки" -->
+      <!-- Блок "Навыки" — через @for -->
       <section>
         <h2 class="section-title">Навыки</h2>
         <ul class="skills-list">
-          <li class="skills-list__item">Python</li>
-          <li class="skills-list__item">C</li>
-          <li class="skills-list__item">C++</li>
-          <li class="skills-list__item">C#</li>
-          <li class="skills-list__item">Java</li>
-          <li class="skills-list__item">JavaScript</li>
-          <li class="skills-list__item">HTML</li>
-          <li class="skills-list__item">PostgreSQL</li>
-          <li class="skills-list__item">Git</li>
-          <li class="skills-list__item">Hyperskill</li>
-          <li class="skills-list__item">ООП</li>
-          <li class="skills-list__item">Бэкенд-разработка</li>
+          @for (skill of skills; track skill) {
+            <li class="skills-list__item">{{ skill }}</li>
+          }
         </ul>
       </section>
 
-      <!-- Блок "Хобби" -->
+      <!-- Блок "Хобби" — через @for -->
       <section>
         <h2 class="section-title">Хобби</h2>
         <div class="hobbies-grid">
-          <div class="hobby-card">
-            <img
-              class="hobby-card__img"
-              src="https://fireseo.ru/wp-content/uploads/2022/06/programming.jpeg"
-              alt="Программирование"
-            />
-            <div class="hobby-card__overlay">
-              <span class="hobby-card__label">Программирование</span>
+          @for (hobby of hobbies; track hobby.label) {
+            <div class="hobby-card">
+              <img class="hobby-card__img" [src]="hobby.src" [alt]="hobby.alt" />
+              <div class="hobby-card__overlay">
+                <span class="hobby-card__label">{{ hobby.label }}</span>
+              </div>
             </div>
-          </div>
-
-          <div class="hobby-card">
-            <img
-              class="hobby-card__img"
-              src="https://i.work.ua/cdn-cgi/image/f=jpeg/article/1161b.jpg?v=1713862773"
-              alt="Чтение"
-            />
-            <div class="hobby-card__overlay">
-              <span class="hobby-card__label">Чтение</span>
-            </div>
-          </div>
-
-          <div class="hobby-card">
-            <img
-              class="hobby-card__img"
-              src="https://soberhotel.ru/wp-content/uploads/2023/10/treking_foto-1024x490.jpg"
-              alt="Пешие прогулки"
-            />
-            <div class="hobby-card__overlay">
-              <span class="hobby-card__label">Пешие прогулки</span>
-            </div>
-          </div>
-
-          <div class="hobby-card">
-            <img
-              class="hobby-card__img"
-              src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Opening_chess_position_from_black_side.jpg"
-              alt="Шахматы"
-            />
-            <div class="hobby-card__overlay">
-              <span class="hobby-card__label">Шахматы</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Блок "Последние статьи" — через Angular компонент -->
-      <section>
-        <h2 class="section-title">Последние статьи</h2>
-        <div class="articles-preview">
-          @for (article of articles; track article.id) {
-            <app-article-card-home [article]="article"></app-article-card-home>
           }
         </div>
-        <a class="all-articles-link" routerLink="/blog">Посмотреть все статьи →</a>
       </section>
+
+      <!-- Блок "Последние статьи" — только если есть статьи -->
+      @if (hasArticles) {
+        <section>
+          <h2 class="section-title">Последние статьи</h2>
+          <div class="articles-preview">
+            @for (article of lastArticles; track article.id) {
+              <app-article-card-home [article]="article"></app-article-card-home>
+            }
+          </div>
+          <a class="all-articles-link" routerLink="/blog">Посмотреть все статьи →</a>
+        </section>
+      }
     </div>
   </div>
 </main>
