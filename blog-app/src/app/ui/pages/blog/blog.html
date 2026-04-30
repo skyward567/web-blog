@@ -27,7 +27,7 @@
     <div class="blog-content">
       <h1>Статьи</h1>
 
-      <!-- Форма — показывается условно, передаём статью для редактирования -->
+      <!-- Форма -->
       @if (showForm) {
         <app-article-form
           [editArticle]="editArticle"
@@ -38,7 +38,7 @@
       }
 
       <!-- Пустое состояние -->
-      @if (articles.length === 0) {
+      @if (store.articles.length === 0) {
         <div class="blog-empty">
           <span class="blog-empty__icon">📄</span>
           <p class="blog-empty__title">Статей пока нет</p>
@@ -47,7 +47,7 @@
       } @else {
         <!-- Список статей -->
         <div class="blog-grid">
-          @for (article of articles; track article.id) {
+          @for (article of store.articles; track article.id) {
             <app-article-card-blog
               [article]="article"
               (delete)="onDelete($event)"
@@ -56,6 +56,21 @@
             </app-article-card-blog>
           }
         </div>
+
+        <!-- Пагинация -->
+        @if (totalPages > 1) {
+          <div class="pagination">
+            @for (page of pages; track page) {
+              <button
+                class="pagination__btn"
+                [class.pagination__btn--active]="page === store.activePage"
+                (click)="onPageChange(page)"
+              >
+                {{ page }}
+              </button>
+            }
+          </div>
+        }
       }
     </div>
   </div>

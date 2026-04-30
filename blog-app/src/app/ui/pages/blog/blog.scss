@@ -83,7 +83,6 @@
 }
 
 .blog-empty {
-  grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -97,15 +96,58 @@
   &__icon {
     font-size: 3rem;
   }
-
   &__title {
     font-size: 1.2rem;
     font-weight: 600;
   }
-
   &__text {
     font-size: 0.95rem;
     color: var(--color-text-muted);
+  }
+}
+
+/* ---------------------------------------------------
+   Пагинация
+--------------------------------------------------- */
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+
+  &__btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    background-color: #ffffff;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover {
+      background-color: var(--color-bg-card-alt);
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+
+    // Активная страница
+    &--active {
+      background-color: var(--color-accent);
+      color: #ffffff;
+      border-color: var(--color-accent);
+
+      &:hover {
+        background-color: var(--color-accent-hover);
+      }
+    }
   }
 }
 

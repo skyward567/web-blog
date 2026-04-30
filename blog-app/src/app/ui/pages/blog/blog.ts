@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Article } from '../../../models/article';
 import { ArticleCardBlog } from '../../components/article-card-blog/article-card-blog';
 import { ArticleForm } from '../../components/article-form/article-form';
+import { ARTICLES_SERVICE_TOKEN } from '../../../services/articles/articles-service.token';
+import { IArticlesService } from '../../../services/articles/articles-service.interface';
+import { ArticlesStoreService } from '../../../services/articles/articles-store.service';
 
 @Component({
   selector: 'app-blog',
@@ -9,78 +12,90 @@ import { ArticleForm } from '../../components/article-form/article-form';
   templateUrl: './blog.html',
   styleUrl: './blog.scss',
 })
-export class Blog {
-  // null — форма скрыта
-  // null editArticle + showForm=true — режим добавления
-  // Article editArticle + showForm=true — режим редактирования
+export class Blog implements OnInit {
   protected showForm = false;
   protected editArticle: Article | null = null;
 
-  protected articles: Article[] = [
-    {
-      id: 1,
-      title: 'Почему Java остаётся востребованным языком в 2024 году',
-      text: 'Java существует уже почти 30 лет, но по-прежнему входит в топ самых популярных языков.',
-      date: '10 декабря 2024',
-    },
-    {
-      id: 2,
-      title: 'Основы ООП в Java: классы, объекты и наследование',
-      text: 'Объектно-ориентированное программирование — сердце Java. Разберём ключевые концепции.',
-      date: '1 декабря 2024',
-    },
-    {
-      id: 3,
-      title: 'C++ vs Java: что выбрать начинающему разработчику',
-      text: 'Сравним управление памятью, производительность и экосистему двух языков.',
-      date: '25 ноября 2024',
-    },
-  ];
+  constructor(
+    // Внедряем сервис через токен
+    @Inject(ARTICLES_SERVICE_TOKEN) private articlesService: IArticlesService,
+    // Внедряем хранилище напрямую
+    protected store: ArticlesStoreService,
+  ) {}
 
-  // Количество статей — считывается из массива
-  protected get postCount(): number {
-    return this.articles.length;
+  ngOnInit(): void {
+    // Проверяем хранилище — если данные уже есть, не делаем запрос
+    if (this.store.articles.length > 0) return;
+    this.loadPage(this.store.activePage);
   }
 
-  // Открыть форму добавления
+  // Загрузить статьи для страницы
+  private loadPage(page: number): void {
+    this.articlesService.getArticles(page).subscribe((response) => {
+      this.store.saveArticles(response.items);
+      this.store.savePage(page);
+      this.store.total = response.total;
+    });
+  }
+
+  // Количество страниц
+  protected get totalPages(): number {
+    return Math.ceil(this.store.total / 7);
+  }
+
+  // Массив номеров страниц для @for в шаблоне
+  protected get pages(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  protected get postCount(): number {
+    return this.store.total;
+  }
+
+  // Переключение страницы
+  protected onPageChange(page: number): void {
+    this.store.savePage(page);
+    this.loadPage(page);
+  }
+
   protected onShowCreateForm(): void {
     this.editArticle = null;
     this.showForm = true;
   }
 
-  // Открыть форму редактирования — передаём статью
   protected onShowEditForm(article: Article): void {
     this.editArticle = article;
     this.showForm = true;
   }
 
-  // Скрыть форму
   protected onCancelForm(): void {
     this.showForm = false;
     this.editArticle = null;
   }
 
-  // Сохранение — добавление или обновление в зависимости от режима
   protected onSave(article: Article): void {
-    if (this.editArticle) {
-      // Режим редактирования — заменяем статью в массиве
-      this.articles = this.articles.map((a) => (a.id === article.id ? article : a));
-    } else {
-      // Режим добавления — вставляем в начало
-      this.articles.unshift(article);
-    }
+    const request$ = this.editArticle
+      ? this.articlesService.updateArticle(article)
+      : this.articlesService.addArticle(article);
+
+    request$.subscribe((response) => {
+      this.store.saveArticles(response.items);
+      this.store.savePage(1);
+      this.store.total = response.total;
+    });
 
     this.showForm = false;
     this.editArticle = null;
   }
 
-  // Удаление статьи из массива
   protected onDelete(id: number): void {
-    this.articles = this.articles.filter((a) => a.id !== id);
+    this.articlesService.deleteArticle(id).subscribe((response) => {
+      this.store.saveArticles(response.items);
+      this.store.total = response.total;
+    });
   }
 
-  // Показать статистику
   protected onShowStats(): void {
-    alert(`Статей на странице: ${this.postCount}`);
+    alert(`Статей всего: ${this.store.total}`);
   }
 }
