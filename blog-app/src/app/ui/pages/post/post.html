@@ -1,0 +1,110 @@
+<div class="container">
+  <a class="back-link" routerLink="/blog">
+    <mat-icon>arrow_back</mat-icon>
+    Назад к списку
+  </a>
+
+  @if (store.article) {
+    <!-- Карточка статьи -->
+    <mat-card class="post-card">
+      <mat-card-header>
+        <mat-card-title>{{ store.article.title }}</mat-card-title>
+        <mat-card-subtitle>{{ store.article.date }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <!-- Картинка-заглушка -->
+      <img
+        mat-card-image
+        src="https://placehold.co/900x300?text=Article+Image"
+        alt="Изображение статьи"
+        class="post-card__image"
+      />
+
+      <mat-card-content>
+        <p class="post-card__text">{{ store.article.text }}</p>
+      </mat-card-content>
+
+      <!-- Рейтинг статьи -->
+      <mat-card-actions class="post-card__actions">
+        <span class="rating-label">Рейтинг статьи:</span>
+        <button mat-icon-button color="warn" (click)="onArticleRating(-1)" title="Понизить рейтинг">
+          <mat-icon>thumb_down</mat-icon>
+        </button>
+        <span class="rating-value">{{ store.article.rating }}</span>
+        <button mat-icon-button color="primary" (click)="onArticleRating(1)" title="Повысить рейтинг">
+          <mat-icon>thumb_up</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Комментарии -->
+    <section class="comments-section">
+      <h2 class="comments-section__title">
+        Комментарии
+        @if (store.comments.length > 0) {
+          <span class="comments-count">({{ store.comments.length }})</span>
+        }
+      </h2>
+
+      @if (store.comments.length === 0) {
+        <p class="comments-empty">Комментариев пока нет. Будьте первым!</p>
+      } @else {
+        @for (comment of store.comments; track comment.id) {
+          <mat-card class="comment-card">
+            <mat-card-header>
+              <mat-card-title>{{ comment.author }}</mat-card-title>
+              <mat-card-subtitle>{{ comment.date }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{ comment.text }}</p>
+            </mat-card-content>
+            <mat-card-actions class="comment-card__actions">
+              <span class="rating-label">Рейтинг:</span>
+              <button mat-icon-button color="warn" (click)="onCommentRating(comment.id, -1)">
+                <mat-icon>thumb_down</mat-icon>
+              </button>
+              <span class="rating-value">{{ comment.rating }}</span>
+              <button mat-icon-button color="primary" (click)="onCommentRating(comment.id, 1)">
+                <mat-icon>thumb_up</mat-icon>
+              </button>
+            </mat-card-actions>
+          </mat-card>
+        }
+      }
+    </section>
+
+    <!-- Форма добавления комментария -->
+    <section class="add-comment-section">
+      <h3>Добавить комментарий</h3>
+
+      <mat-form-field appearance="outline" class="add-comment-section__field">
+        <mat-label>Ваше имя / ник</mat-label>
+        <input matInput [(ngModel)]="newAuthor" placeholder="Имя или ник" />
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="add-comment-section__field">
+        <mat-label>Текст комментария</mat-label>
+        <textarea
+          matInput
+          [(ngModel)]="newText"
+          placeholder="Напишите ваш комментарий..."
+          rows="4"
+        ></textarea>
+        <mat-icon matSuffix>comment</mat-icon>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onAddComment()"
+        [disabled]="!newAuthor.trim() || !newText.trim()"
+      >
+        <mat-icon>send</mat-icon>
+        Отправить
+      </button>
+    </section>
+  } @else {
+    <p class="post-loading">Загрузка...</p>
+  }
+</div>

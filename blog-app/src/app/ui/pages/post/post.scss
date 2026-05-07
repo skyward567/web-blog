@@ -1,0 +1,130 @@
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #5c6bc0;
+  text-decoration: none;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #3949ab;
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// ----- Карточка статьи -----
+.post-card {
+  margin-bottom: 40px;
+
+  &__image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  &__text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #333;
+    white-space: pre-wrap;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 16px 16px;
+  }
+}
+
+// ----- Рейтинг (общий) -----
+.rating-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-right: 4px;
+}
+
+.rating-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  min-width: 28px;
+  text-align: center;
+  color: #333;
+}
+
+// ----- Комментарии -----
+.comments-section {
+  margin-bottom: 40px;
+
+  &__title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #222;
+  }
+}
+
+.comments-count {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888;
+  margin-left: 6px;
+}
+
+.comments-empty {
+  color: #888;
+  font-style: italic;
+  padding: 16px 0;
+}
+
+.comment-card {
+  margin-bottom: 16px;
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 16px 12px;
+  }
+}
+
+// ----- Форма комментария -----
+.add-comment-section {
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #222;
+  }
+
+  &__field {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  button[mat-raised-button] {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+}
+
+.post-loading {
+  text-align: center;
+  color: #888;
+  padding: 60px 0;
+  font-size: 1.1rem;
+}
