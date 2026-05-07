@@ -63,6 +63,7 @@ export class ArticleForm implements OnInit {
         }),
       title: title.trim(),
       text: text.trim(),
+      rating: 0,
     };
 
     this.save.emit(article);

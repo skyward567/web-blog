@@ -101,3 +101,12 @@
     }
   }
 }
+
+.blog-card__link {
+  text-decoration: none;
+  color: inherit;
+
+  &:hover .blog-card__title {
+    color: #5c6bc0;
+  }
+}

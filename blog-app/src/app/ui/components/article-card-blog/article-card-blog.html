@@ -5,26 +5,19 @@
     alt="Статья"
   />
   <div class="blog-card__body">
-    <h2 class="blog-card__title">{{ article.title }}</h2>
+    <a [routerLink]="['/blog', article.id]" class="blog-card__link">
+      <h2 class="blog-card__title">{{ article.title }}</h2>
+    </a>
     <p class="blog-card__date">{{ article.date }}</p>
     <p class="blog-card__text">{{ article.text }}</p>
   </div>
 
-  <!-- Кнопки появляются при наведении на карточку -->
   <div class="blog-card__actions">
-    <button
-      class="blog-card__action-btn blog-card__action-btn--edit"
-      title="Редактировать статью"
-      (click)="onEdit()"
-    >
-      ✏️
+    <button mat-icon-button (click)="onEdit()">
+      <mat-icon>edit</mat-icon>
     </button>
-    <button
-      class="blog-card__action-btn blog-card__action-btn--delete"
-      title="Удалить статью"
-      (click)="onDelete()"
-    >
-      ✕
+    <button mat-icon-button color="warn" (click)="onDelete()">
+      <mat-icon>delete</mat-icon>
     </button>
   </div>
 </div>
