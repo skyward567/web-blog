@@ -4,14 +4,11 @@ import { Article } from '../../models/article';
 import { IArticlesService, ArticlesResponse } from './articles-service.interface';
 
 const STORAGE_KEY = 'blog_posts';
-const PAGE_SIZE = 7; // максимум статей на странице
+const PAGE_SIZE = 7;
 
+// Сервис для GitHub Pages — работает с localStorage
 @Injectable({ providedIn: 'root' })
 export class ArticlesService implements IArticlesService {
-  // ---------------------------------------------------
-  // Работа с localStorage
-  // ---------------------------------------------------
-
   private loadAll(): Article[] {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
@@ -26,7 +23,6 @@ export class ArticlesService implements IArticlesService {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(articles));
   }
 
-  // Формирует ответ с учётом пагинации
   private buildResponse(articles: Article[], page: number): ArticlesResponse {
     const total = articles.length;
     const start = (page - 1) * PAGE_SIZE;
@@ -34,39 +30,27 @@ export class ArticlesService implements IArticlesService {
     return { items, total };
   }
 
-  // ---------------------------------------------------
-  // Методы сервиса — возвращают Observable
-  // of() оборачивает обычное значение в Observable
-  // В реальном приложении здесь был бы HTTP запрос
-  // ---------------------------------------------------
-
-  // Получить статьи для страницы page
   public getArticles(page: number): Observable<ArticlesResponse> {
-    const all = this.loadAll();
-    return of(this.buildResponse(all, page));
+    return of(this.buildResponse(this.loadAll(), page));
   }
 
-  // Добавить статью
-  public addArticle(article: Article): Observable<ArticlesResponse> {
+  // imageFile игнорируется в localStorage-версии
+  public addArticle(article: Article, _imageFile?: File | null): Observable<ArticlesResponse> {
     const all = this.loadAll();
-    all.unshift(article); // вставляем в начало
+    all.unshift({ ...article, id: Date.now().toString() });
     this.saveAll(all);
-    return of(this.buildResponse(all, 1)); // возвращаем первую страницу
+    return of(this.buildResponse(all, 1));
   }
 
-  // Обновить статью
-  public updateArticle(article: Article): Observable<ArticlesResponse> {
-    const all = this.loadAll();
-    const updated = all.map((a) => (a.id === article.id ? article : a));
-    this.saveAll(updated);
-    return of(this.buildResponse(updated, 1));
+  public updateArticle(article: Article, _imageFile?: File | null): Observable<ArticlesResponse> {
+    const all = this.loadAll().map((a) => (a.id === article.id ? article : a));
+    this.saveAll(all);
+    return of(this.buildResponse(all, 1));
   }
 
-  // Удалить статью
-  public deleteArticle(id: number): Observable<ArticlesResponse> {
-    const all = this.loadAll();
-    const updated = all.filter((a) => a.id !== id);
-    this.saveAll(updated);
-    return of(this.buildResponse(updated, 1));
+  public deleteArticle(id: string): Observable<ArticlesResponse> {
+    const all = this.loadAll().filter((a) => a.id !== id);
+    this.saveAll(all);
+    return of(this.buildResponse(all, 1));
   }
 }

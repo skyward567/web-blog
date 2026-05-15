@@ -5,39 +5,35 @@
   </a>
 
   @if (store.article) {
-    <!-- Карточка статьи -->
     <mat-card class="post-card">
       <mat-card-header>
         <mat-card-title>{{ store.article.title }}</mat-card-title>
         <mat-card-subtitle>{{ store.article.date }}</mat-card-subtitle>
       </mat-card-header>
 
-      <!-- Картинка-заглушка -->
       <img
         mat-card-image
-        src="https://placehold.co/900x300?text=Article+Image"
+        [src]="store.article.imageUrl || 'https://placehold.co/900x300?text=Article+Image'"
         alt="Изображение статьи"
         class="post-card__image"
       />
 
       <mat-card-content>
-        <p class="post-card__text">{{ store.article.text }}</p>
+        <p class="post-card__text">{{ store.article.content }}</p>
       </mat-card-content>
 
-      <!-- Рейтинг статьи -->
       <mat-card-actions class="post-card__actions">
         <span class="rating-label">Рейтинг статьи:</span>
-        <button mat-icon-button color="warn" (click)="onArticleRating(-1)" title="Понизить рейтинг">
+        <button mat-icon-button color="warn" (click)="onArticleRating(-1)">
           <mat-icon>thumb_down</mat-icon>
         </button>
         <span class="rating-value">{{ store.article.rating }}</span>
-        <button mat-icon-button color="primary" (click)="onArticleRating(1)" title="Повысить рейтинг">
+        <button mat-icon-button color="primary" (click)="onArticleRating(1)">
           <mat-icon>thumb_up</mat-icon>
         </button>
       </mat-card-actions>
     </mat-card>
 
-    <!-- Комментарии -->
     <section class="comments-section">
       <h2 class="comments-section__title">
         Комментарии
@@ -52,11 +48,11 @@
         @for (comment of store.comments; track comment.id) {
           <mat-card class="comment-card">
             <mat-card-header>
-              <mat-card-title>{{ comment.author }}</mat-card-title>
+              <mat-card-title>{{ comment.username }}</mat-card-title>
               <mat-card-subtitle>{{ comment.date }}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-              <p>{{ comment.text }}</p>
+              <p>{{ comment.content }}</p>
             </mat-card-content>
             <mat-card-actions class="comment-card__actions">
               <span class="rating-label">Рейтинг:</span>
@@ -73,7 +69,6 @@
       }
     </section>
 
-    <!-- Форма добавления комментария -->
     <section class="add-comment-section">
       <h3>Добавить комментарий</h3>
 
@@ -88,8 +83,8 @@
         <textarea
           matInput
           [(ngModel)]="newText"
-          placeholder="Напишите ваш комментарий..."
           rows="4"
+          placeholder="Напишите комментарий..."
         ></textarea>
         <mat-icon matSuffix>comment</mat-icon>
       </mat-form-field>
