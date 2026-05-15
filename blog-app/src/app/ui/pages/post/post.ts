@@ -27,7 +27,6 @@ import { PostStoreService } from '../../../services/post/post-store.service';
   styleUrl: './post.scss',
 })
 export class Post implements OnInit, OnDestroy {
-  // Поля формы нового комментария
   protected newAuthor = '';
   protected newText = '';
 
@@ -39,23 +38,19 @@ export class Post implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    // Очищаем стор при заходе на страницу конкретного поста
+    const id = this.route.snapshot.paramMap.get('id') ?? '';
     this.store.clear();
     this.postService.getPost(id).subscribe((data) => {
       this.store.saveArticle(data.article);
       this.store.saveComments(data.comments);
-      // Бонусный пункт: меняем title вкладки
       this.titleService.setTitle(data.article.title || 'Пост');
     });
   }
 
   ngOnDestroy(): void {
-    // Возвращаем стандартный заголовок при уходе со страницы
     this.titleService.setTitle('Блог');
   }
 
-  // Рейтинг статьи
   protected onArticleRating(delta: number): void {
     if (!this.store.article) return;
     this.postService.updateArticleRating(this.store.article.id, delta).subscribe((updated) => {
@@ -63,8 +58,7 @@ export class Post implements OnInit, OnDestroy {
     });
   }
 
-  // Рейтинг комментария
-  protected onCommentRating(commentId: number, delta: number): void {
+  protected onCommentRating(commentId: string, delta: number): void {
     if (!this.store.article) return;
     this.postService
       .updateCommentRating(this.store.article.id, commentId, delta)
@@ -73,16 +67,16 @@ export class Post implements OnInit, OnDestroy {
       });
   }
 
-  // Добавить комментарий
   protected onAddComment(): void {
     if (!this.newAuthor.trim() || !this.newText.trim() || !this.store.article) return;
 
     const comment: Comment = {
-      id: Date.now(),
-      author: this.newAuthor.trim(),
-      text: this.newText.trim(),
+      id: Date.now().toString(), // string
+      username: this.newAuthor.trim(), // username вместо author
+      content: this.newText.trim(), // content вместо text
       date: new Date().toLocaleDateString('ru-RU'),
       rating: 0,
+      articleId: this.store.article.id,
     };
 
     this.postService.addComment(this.store.article.id, comment).subscribe((comments) => {

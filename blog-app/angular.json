@@ -34,6 +34,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.production.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -75,7 +81,8 @@
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "name": "skyward567",
-            "email": "Eduardhomebox@gmail.com"
+            "email": "Eduardhomebox@gmail.com",
+            "proxyConfig": "proxy.conf.json"
           }
         }
       }

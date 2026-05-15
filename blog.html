@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="blog-styles.css" />
   </head>
   <body>
-
     <!-- Навигация -->
     <nav class="nav">
       <ul class="nav__list">
@@ -18,37 +17,30 @@
 
     <div class="container">
       <div class="blog-layout">
-
         <!-- Боковая админ-панель -->
         <aside class="admin-sidebar">
           <span class="admin-sidebar__title">Панель</span>
 
           <button
-            id="btn-create-post"
-            class="admin-sidebar__btn admin-sidebar__btn--primary"
-            title="Открыть форму создания новой статьи"
+            mat-raised-button
+            color="primary"
+            (click)="onShowCreateForm()"
           >
-            ✏️ Создать статью
+            <mat-icon>edit</mat-icon> Создать статью
           </button>
 
-          <button
-            id="btn-show-stats"
-            class="admin-sidebar__btn"
-            title="Показать статистику страницы: количество постов и другую информацию"
-          >
-            📊 Показать статистику
+          <button mat-button (click)="onShowStats()">
+            <mat-icon>bar_chart</mat-icon> Статистика
           </button>
         </aside>
 
         <!-- Основной контент -->
         <div class="blog-content">
-
           <section>
             <h1>Статьи</h1>
 
             <!-- Обёртка нужна чтобы лоадер позиционировался поверх сетки -->
             <div class="blog-grid-wrapper" id="blog-grid-wrapper">
-
               <!-- Лоадер — три прыгающие точки -->
               <div class="blog-loader" id="blog-loader">
                 <span class="blog-loader__dot"></span>
@@ -58,7 +50,6 @@
 
               <!-- Сетка карточек — заполняется из JS / localStorage -->
               <div class="blog-grid" id="blog-grid">
-
                 <!-- Состояние "нет статей" -->
                 <div class="blog-empty" id="blog-empty">
                   <span class="blog-empty__icon">📄</span>
@@ -67,13 +58,13 @@
                     Создайте первую статью с помощью кнопки в боковой панели
                   </p>
                   <button
-                    id="btn-empty-create"
-                    class="btn btn--primary blog-empty__btn"
+                    mat-raised-button
+                    color="primary"
+                    (click)="onShowCreateForm()"
                   >
-                    ✏️ Создать статью
+                    <mat-icon>edit</mat-icon> Создать статью
                   </button>
                 </div>
-
               </div>
             </div>
           </section>
@@ -83,9 +74,10 @@
             <h2 class="create-article-section__title">Новая статья</h2>
 
             <div class="create-article-form">
-
               <div>
-                <label class="create-article-form__label" for="post-title">Заголовок *</label>
+                <label class="create-article-form__label" for="post-title"
+                  >Заголовок *</label
+                >
                 <input
                   class="create-article-form__input"
                   type="text"
@@ -96,7 +88,9 @@
               </div>
 
               <div>
-                <label class="create-article-form__label" for="post-text">Текст *</label>
+                <label class="create-article-form__label" for="post-text"
+                  >Текст *</label
+                >
                 <textarea
                   class="create-article-form__textarea"
                   id="post-text"
@@ -110,28 +104,33 @@
                 <button class="btn btn--primary" type="button" id="btn-save">
                   Сохранить
                 </button>
-                <button class="btn btn--secondary" type="button" id="btn-cancel">
+                <button
+                  class="btn btn--secondary"
+                  type="button"
+                  id="btn-cancel"
+                >
                   Отмена
                 </button>
               </div>
-
             </div>
           </section>
-
         </div>
         <!-- /blog-content -->
-
       </div>
     </div>
-
 
     <!-- Диалог статистики -->
     <dialog class="stats-dialog" id="stats-dialog">
       <div class="stats-dialog__inner">
-
         <div class="stats-dialog__header">
           <h2 class="stats-dialog__title">Статистика страницы</h2>
-          <button class="stats-dialog__close-x" id="btn-dialog-x" title="Закрыть">✕</button>
+          <button
+            class="stats-dialog__close-x"
+            id="btn-dialog-x"
+            title="Закрыть"
+          >
+            ✕
+          </button>
         </div>
 
         <div class="stats-dialog__grid">
@@ -146,12 +145,12 @@
         </div>
 
         <div class="stats-dialog__footer">
-          <button class="btn btn--primary" id="btn-dialog-close">Закрыть</button>
+          <button class="btn btn--primary" id="btn-dialog-close">
+            Закрыть
+          </button>
         </div>
-
       </div>
     </dialog>
-
 
     <!-- Template карточки статьи -->
     <template id="post-template">
@@ -169,14 +168,16 @@
       </div>
     </template>
 
-
     <!-- Футер -->
     <footer class="footer">
       <div class="footer__inner">
         <div>
           <h2 class="footer__title">Контакты</h2>
           <p class="footer__text">
-            Email: <a class="footer__link" href="mailto:student@nstu.ru">student@nstu.ru</a>
+            Email:
+            <a class="footer__link" href="mailto:student@nstu.ru"
+              >student@nstu.ru</a
+            >
           </p>
           <p class="footer__text">Телефон: +7 (999) 123-45-67</p>
         </div>
@@ -193,6 +194,5 @@
     </footer>
 
     <script src="blog.js"></script>
-
   </body>
 </html>

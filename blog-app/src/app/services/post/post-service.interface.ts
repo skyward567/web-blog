@@ -8,8 +8,8 @@ export interface PostData {
 }
 
 export interface IPostService {
-  getPost(id: number): Observable<PostData>;
-  addComment(articleId: number, comment: Comment): Observable<Comment[]>;
-  updateCommentRating(articleId: number, commentId: number, delta: number): Observable<Comment[]>;
-  updateArticleRating(articleId: number, delta: number): Observable<Article>;
+  getPost(id: string): Observable<PostData>;
+  addComment(articleId: string, comment: Comment): Observable<Comment[]>;
+  updateCommentRating(articleId: string, commentId: string, delta: number): Observable<Comment[]>;
+  updateArticleRating(articleId: string, delta: number): Observable<Article>;
 }

@@ -17,19 +17,15 @@ export class Blog implements OnInit {
   protected editArticle: Article | null = null;
 
   constructor(
-    // Внедряем сервис через токен
     @Inject(ARTICLES_SERVICE_TOKEN) private articlesService: IArticlesService,
-    // Внедряем хранилище напрямую
     protected store: ArticlesStoreService,
   ) {}
 
   ngOnInit(): void {
-    // Проверяем хранилище — если данные уже есть, не делаем запрос
     if (this.store.articles.length > 0) return;
     this.loadPage(this.store.activePage);
   }
 
-  // Загрузить статьи для страницы
   private loadPage(page: number): void {
     this.articlesService.getArticles(page).subscribe((response) => {
       this.store.saveArticles(response.items);
@@ -38,12 +34,10 @@ export class Blog implements OnInit {
     });
   }
 
-  // Количество страниц
   protected get totalPages(): number {
     return Math.ceil(this.store.total / 7);
   }
 
-  // Массив номеров страниц для @for в шаблоне
   protected get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
@@ -52,7 +46,6 @@ export class Blog implements OnInit {
     return this.store.total;
   }
 
-  // Переключение страницы
   protected onPageChange(page: number): void {
     this.store.savePage(page);
     this.loadPage(page);
@@ -73,10 +66,11 @@ export class Blog implements OnInit {
     this.editArticle = null;
   }
 
-  protected onSave(article: Article): void {
+  // Теперь принимает { article, imageFile }
+  protected onSave(event: { article: Article; imageFile: File | null }): void {
     const request$ = this.editArticle
-      ? this.articlesService.updateArticle(article)
-      : this.articlesService.addArticle(article);
+      ? this.articlesService.updateArticle(event.article, event.imageFile)
+      : this.articlesService.addArticle(event.article, event.imageFile);
 
     request$.subscribe((response) => {
       this.store.saveArticles(response.items);
@@ -88,7 +82,7 @@ export class Blog implements OnInit {
     this.editArticle = null;
   }
 
-  protected onDelete(id: number): void {
+  protected onDelete(id: string): void {
     this.articlesService.deleteArticle(id).subscribe((response) => {
       this.store.saveArticles(response.items);
       this.store.total = response.total;

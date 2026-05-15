@@ -2,48 +2,92 @@
   <h2 class="create-article-form__title">{{ formTitle }}</h2>
 
   <form [formGroup]="form">
-    <!-- Поле "Заголовок" -->
-    <div class="create-article-form__field">
-      <label class="create-article-form__label">Заголовок *</label>
-      <input
-        class="create-article-form__input"
-        [class.create-article-form__input--error]="titleControl?.invalid && titleControl?.touched"
-        formControlName="title"
-        placeholder="Введите заголовок статьи (минимум 25 символов)"
-      />
-      <!-- Ошибки показываются только после того как пользователь тронул поле -->
+    <!-- Заголовок -->
+    <mat-form-field appearance="outline" class="create-article-form__field">
+      <mat-label>Заголовок *</mat-label>
+      <input matInput formControlName="title" placeholder="Минимум 25 символов" />
+      <mat-icon matSuffix>title</mat-icon>
       @if (titleControl?.touched && titleControl?.hasError('required')) {
-        <span class="create-article-form__error">Заголовок обязателен для заполнения</span>
+        <mat-error>Заголовок обязателен</mat-error>
       }
       @if (titleControl?.touched && titleControl?.hasError('minlength')) {
-        <span class="create-article-form__error">
-          Минимальная длина заголовка — 25 символов (сейчас {{ titleControl?.value?.length ?? 0 }})
-        </span>
+        <mat-error> Минимум 25 символов (сейчас {{ titleControl?.value?.length ?? 0 }}) </mat-error>
       }
-    </div>
+    </mat-form-field>
 
-    <!-- Поле "Текст" -->
-    <div class="create-article-form__field">
-      <label class="create-article-form__label">Текст *</label>
+    <!-- Текст статьи -->
+    <mat-form-field appearance="outline" class="create-article-form__field">
+      <mat-label>Текст статьи *</mat-label>
       <textarea
-        class="create-article-form__textarea"
-        [class.create-article-form__textarea--error]="textControl?.invalid && textControl?.touched"
-        formControlName="text"
+        matInput
+        formControlName="content"
         rows="5"
         placeholder="Введите текст статьи"
       ></textarea>
-      @if (textControl?.touched && textControl?.hasError('required')) {
-        <span class="create-article-form__error">Текст статьи обязателен для заполнения</span>
+      @if (contentControl?.touched && contentControl?.hasError('required')) {
+        <mat-error>Текст обязателен</mat-error>
       }
+    </mat-form-field>
+
+    <!-- Категория с autocomplete (только при работе с API) -->
+    @if (useApi) {
+      <mat-form-field appearance="outline" class="create-article-form__field">
+        <mat-label>Категория</mat-label>
+        <input
+          matInput
+          formControlName="category"
+          placeholder="Выберите или введите новую"
+          [matAutocomplete]="auto"
+        />
+        <mat-icon matSuffix>category</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (cat of filteredCategories$ | async; track cat.id) {
+            <mat-option [value]="cat.name">{{ cat.name }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    }
+
+    <!-- Загрузка картинки -->
+    <div class="create-article-form__field create-article-form__image-upload">
+      <label class="create-article-form__image-label">
+        <mat-icon>image</mat-icon>
+        Изображение статьи
+      </label>
+
+      @if (imagePreview) {
+        <img class="create-article-form__preview" [src]="imagePreview" alt="Превью" />
+      }
+
+      <button mat-stroked-button type="button" (click)="fileInput.click()">
+        <mat-icon>upload</mat-icon>
+        {{ imagePreview ? 'Заменить картинку' : 'Загрузить картинку' }}
+      </button>
+      <input
+        #fileInput
+        type="file"
+        accept="image/*"
+        style="display: none"
+        (change)="onImageSelected($event)"
+      />
     </div>
 
     <!-- Кнопки -->
     <div class="create-article-form__buttons">
-      <!-- disabled когда форма невалидна -->
-      <button class="btn btn--primary" type="button" [disabled]="form.invalid" (click)="onSave()">
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        [disabled]="form.invalid"
+        (click)="onSave()"
+      >
+        <mat-icon>save</mat-icon>
         {{ saveLabel }}
       </button>
-      <button class="btn btn--secondary" type="button" (click)="onCancel()">Отмена</button>
+      <button mat-stroked-button type="button" (click)="onCancel()">
+        <mat-icon>close</mat-icon>
+        Отмена
+      </button>
     </div>
   </form>
 </div>

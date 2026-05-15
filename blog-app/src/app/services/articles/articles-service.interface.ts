@@ -8,7 +8,7 @@ export interface ArticlesResponse {
 
 export interface IArticlesService {
   getArticles(page: number): Observable<ArticlesResponse>;
-  addArticle(article: Article): Observable<ArticlesResponse>;
-  updateArticle(article: Article): Observable<ArticlesResponse>;
-  deleteArticle(id: number): Observable<ArticlesResponse>;
+  addArticle(article: Article, imageFile?: File | null): Observable<ArticlesResponse>;
+  updateArticle(article: Article, imageFile?: File | null): Observable<ArticlesResponse>;
+  deleteArticle(id: string): Observable<ArticlesResponse>;
 }
